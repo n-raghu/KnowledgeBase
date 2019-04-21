@@ -42,10 +42,8 @@ class getPostAcc(Resource):
 			abort(400)
 		obo=request.get_json()
 		print(obo)
-		eventSession=dataSession()
-		eventSession.add(A(**obo))
-		eventSession.commit()
-		eventSession.close()
+		P.poll(0)
+        P.produce(getTopic(),packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
 class AccountID(Resource):

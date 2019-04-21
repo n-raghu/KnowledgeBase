@@ -1,6 +1,7 @@
 flask
 psycopg2-binary
-connexion
 sqlalchemy
 numpy
 pandas
+confluent-kafka
+msgpack
