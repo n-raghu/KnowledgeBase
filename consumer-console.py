@@ -24,7 +24,8 @@ while True:
     packet=validateMessage(msg)
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
-		print(unp)
+		print('Compressed Message: ' +str(sys.getsizeof(msg.value())))
+		print('Actual Message: ' +str(sys.getsizeof(unp)))
     else:
         continue
 
