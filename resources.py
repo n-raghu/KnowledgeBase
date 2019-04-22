@@ -1,4 +1,4 @@
-from msgpack import packb,unpackb
+from msgpack import packb
 from random import randint
 from flask import jsonify, abort, request, make_response, Flask
 from flask_restful import Api,Resource

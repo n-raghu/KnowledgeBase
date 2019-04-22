@@ -18,7 +18,7 @@ def decode_dtm(obj):
         obj=dtm.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S")
     return obj
 
-c.subscribe(['topic-accounts-patch'])
+c.subscribe(['topic-accounts-patch','topic-accounts-purge'])
 
 while True:
     msg=c.poll(1.0)
