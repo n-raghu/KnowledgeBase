@@ -4,8 +4,7 @@ if len(sys.argv)<2:
 else:
 	pwd=sys.argv[1]
 
-from model import Account as A
-from resources import Flask,JWTManager,Api
+from resources import Flask,JWTManager,Api,AccountID,getPostAcc,getNewToken,cfg
 
 app=Flask(__name__)
 app.config['JWT_SECRET_KEY']='eaeadmin'

@@ -10,8 +10,11 @@ from confluent_kafka import Producer,Consumer,KafkaError
 from model import A
 from yaml import safe_load
 
-urx='postgresql://postgres:reporter@172.31.16.16:54321/statzen'
-P=Producer({'bootstrap.servers': '10.0.0.10'})
+with open(app.yml) as ymlFile:
+    cfg=safe_load(ymlFile)
+
+urx='postgresql://' +cfg['datastore']['uid']+ ':' +cfg['datastore']['pwd']+ '@' +cfg['datastore']['host']+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['dbn']
+P=Producer({'bootstrap.servers': cfg['kafka']['host']})
 
 def dataSession():
 	pgx=say.create_engine(urx)

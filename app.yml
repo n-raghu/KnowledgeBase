@@ -1,6 +1,7 @@
 kafka:
   host: 10.0.0.10
   port: 9092
+  cluster: false
 
 datastore:
   host: 172.31.16.16

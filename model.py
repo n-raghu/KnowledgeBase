@@ -32,7 +32,7 @@ class Account(BASE):
 		return "<A('%s')>" % (self.aid)
 
 if __name__=='__main__':
-	from resources import *
+	from resources import urx
 	pge=say.create_engine(urx)
 	BASE.metadata.create_all(pge)
 	pge.dispose()
