@@ -7,17 +7,17 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng,text as alchemyText
 from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
-from model import A
+from model import Account as A
 from yaml import safe_load
 
-with open(app.yml) as ymlFile:
+with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
 
-urx='postgresql://' +cfg['datastore']['uid']+ ':' +cfg['datastore']['pwd']+ '@' +cfg['datastore']['host']+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['dbn']
+urx='postgresql://' +cfg['datastore']['uid']+ ':' +cfg['datastore']['pwd']+ '@' +cfg['datastore']['host']+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['db']
 P=Producer({'bootstrap.servers': cfg['kafka']['host']})
 
 def dataSession():
-	pgx=say.create_engine(urx)
+	pgx=dbeng(urx)
 	SessionClass=sessionmaker(bind=pgx)
 	Session=SessionClass()
 	return Session
