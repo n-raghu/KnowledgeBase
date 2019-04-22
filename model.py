@@ -1,5 +1,6 @@
 import sqlalchemy as say
 from sqlalchemy.ext.declarative import declarative_base
+from datetime import datetime as dtm
 
 BASE=declarative_base()
 
@@ -27,7 +28,7 @@ class Account(BASE):
 	channel_partner=COL(BOOL)
 	onboard_type=COL(TXT)
 	start_date=COL(DT)
-	last_updated_time=COL(TIMES)
+	last_updated_time=COL(TIMES,default=dtm.utcnow(),onupdate=dtm.utcnow())
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 

@@ -87,7 +87,7 @@ class AccountID(Resource):
 	@jwt_required
 	def get(self,accid):
 		user=get_jwt_identity()
-		if user!=pwd:
+		if user!='nuPassword':
 			return jsonify({'response':'Incorrect/Tampered Token'})
 		print(user)
 		eventSession=dataSession()
@@ -129,5 +129,5 @@ class getNewToken(Resource):
 			abort(400)
 		obo=request.get_json()
 		username=request.json.get('username',None)
-		access_token=create_access_token(identity=username,expires_delta=tdt(seconds=36))
+		access_token=create_access_token(identity=username,expires_delta=tdt(seconds=cfg['app']['token']))
 		return jsonify(access_token)

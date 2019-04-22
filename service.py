@@ -1,9 +1,3 @@
-import sys
-if len(sys.argv)<2:
-	pwd='nuPassword'
-else:
-	pwd=sys.argv[1]
-
 from resources import Flask,JWTManager,Api,AccountID,getPostAcc,getNewToken,cfg
 
 app=Flask(__name__)
