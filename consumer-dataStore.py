@@ -20,18 +20,31 @@ def decode_dtm(obj):
 
 c.subscribe(['topic-accounts-patch','topic-accounts-purge'])
 
+def validateMessage(msg):
+    pct=True
+    if msg is None:
+        pct=False
+    elif msg.error():
+        print('Error: {}'.format(msg.error()))
+        pct=False
+    return pct
+
 while True:
     msg=c.poll(1.0)
-    if msg is None:
+    packet=validateMessage(msg)
+    if packet:
+        unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
+        eventSession=dataSession()
+        if isinstance(unp,list):
+            print('Streaming list of ' +str(len(unp))+ ' accounts...')
+            unpList=[A(**u) for u in unp]
+            eventSession.add_all(unpList)
+        else:
+            eventSession.add(A(**unp))
+            print('One account...')
+        eventSession.commit()
+        eventSession.close()
+    else:
         continue
-    if msg.error():
-        print("Consumer error: {}".format(msg.error()))
-        continue
-    unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
-    print(unp)
-    eventSession=dataSession()
-    eventSession.add(A(**unp))
-    eventSession.commit()
-    eventSession.close()
 
 c.close()
