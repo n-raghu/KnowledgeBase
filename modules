@@ -1,7 +1,10 @@
+pyyaml
 flask
+flask-restful
+flask-jwt-extended
 psycopg2-binary
 sqlalchemy
 numpy
 pandas
-confluent-kafka
 msgpack
+confluent-kafka

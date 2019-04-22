@@ -16,4 +16,7 @@ UNION ALL
 SELECT 'swiss',555,1,TRUE,'AKS','custom',TRUE,TRUE,'direct',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP
 
 {'aid':999,'account_name':'NuClient','instancecode':'eu','lms_custid':199,'deploy_mode':'direct','account_flag':TRUE,'eae_integration':FALSE,'channel_partner':FALSE,'onboard_type':'custom','start_date':dtm.utcnow(),'last_updated_time':dtm.utcnow()}
-{"aid":999,"account_name":"NuClient","instancecode":"eu","lms_custid":199,"deploy_mode":"direct","account_flag":TRUE,"eae_integration":FALSE,"channel_partner":FALSE,"onboard_type":"custom","start_date":dtm.utcnow(),"last_updated_time":dtm.utcnow()}
+
+{"aid":999,"account_name":"WestClient","instancecode":"us-farm","lms_custid":466,"deploy_mode":"direct","account_flag":TRUE,"eae_integration":FALSE,"channel_partner":FALSE,"onboard_type":"custom","start_date":dtm.utcnow(),"last_updated_time":dtm.utcnow()}
+
+curl -i -H "Content-Type: application/json" -X POST -d '{"aid":949,"account_name":"WestClient","instancecode":"us-farm","lms_custid":466,"deploy_mode":"direct","account_flag":true,"eae_integration":false,"channel_partner":false,"onboard_type":"custom","start_date":dtm.utcnow(),"last_updated_time":dtm.utcnow()}' 172.31.16.16:39099/accounts

@@ -14,7 +14,7 @@ c=Consumer({
     'auto.offset.reset': 'earliest'
 })
 
-c.subscribe(['topic-accounts'])
+c.subscribe(['topic-accounts-patch','topic-accounts-purge'])
 
 while True:
     msg=c.poll(1.0)
@@ -23,7 +23,11 @@ while True:
     if msg.error():
         print("Consumer error: {}".format(msg.error()))
         continue
-    print('Received message: {}'.format(msg.value()) +', Message Size: '+ str(sys.getsizeof(msg.value())))
+    if msg.topic()=='topic-accounts-patch':
+        print('Patch document...')
+    else:
+        print('Erasing document...')
+    print('Message: {}'.format(msg.value()) +', Message Size: '+ str(sys.getsizeof(msg.value())))
     unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
     print(unp)
     print('Size after Unpacking: ' +str(sys.getsizeof(unp)))

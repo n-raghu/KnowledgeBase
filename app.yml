@@ -1,0 +1,17 @@
+kafka:
+  host: 10.0.0.10
+  port: 9092
+
+datastore:
+  host: 172.31.16.16
+  port: 54321
+  uid: postgres
+  pwd: reporter
+  db: statzen
+  schema: public
+
+app:
+  key: eaeadmin
+  debug: true
+  host: 0.0.0.0
+  port: 39099
