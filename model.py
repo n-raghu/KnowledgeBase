@@ -20,8 +20,7 @@ NUM=say.NUMERIC
 class Account(BASE):
 	__tablename__='accounts'
 	instancecode=COL(TXT)
-	lms_custid=COL(BIGINT)
-	aid=COL(NUM(64,0),primary_key=True)
+	lms_custid=COL(BIGINT,primary_key=True)
 	account_flag=COL(TXT)
 	account_name=COL(TXT)
 	deploy_mode=COL(TXT)
@@ -29,7 +28,7 @@ class Account(BASE):
 	channel_partner=COL(BOOL)
 	onboard_type=COL(TXT)
 	start_date=COL(DT)
-	last_updated_time=COL(TIMES,default=dtm.utcnow(),onupdate=dtm.utcnow())
+	aid=COL(BIGINT)
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 

@@ -20,8 +20,8 @@ def batchPoster(n=10):
     reqList=[]
     for i in range(0,n):
         company=R.choice(companylist) +'-'+ chr(R.choice(range(65,90)))
-        document={"aid":uid().int,"account_name":company,"instancecode":R.choice(instancelist)
-        ,"lms_custid":int(dtm.timestamp(dtm.utcnow())),"deploy_mode":R.choice(deploy_mode)
+        document={"account_name":company,"instancecode":R.choice(instancelist)
+        ,"lms_custid":R.choice(range(69,69069)),"deploy_mode":R.choice(deploy_mode)
         ,"account_flag":R.choice([True,False]),"eae_integration":R.choice([True,False])
         ,"channel_partner":R.choice([True,False]),"onboard_type":R.choice(["custom","partner","direct"])
         ,"start_date":str(dtm.utcnow().date()-tdt(days=R.choice(range(10,1000))))}
