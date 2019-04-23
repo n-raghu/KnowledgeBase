@@ -15,12 +15,13 @@ TXT=say.Text
 TIME=say.TIME
 TIMES=say.TIMESTAMP
 DT=say.Date
+NUM=say.NUMERIC
 
 class Account(BASE):
 	__tablename__='accounts'
 	instancecode=COL(TXT)
 	lms_custid=COL(BIGINT)
-	aid=COL(BIGINT,primary_key=True)
+	aid=COL(NUM(64,0),primary_key=True)
 	account_flag=COL(TXT)
 	account_name=COL(TXT)
 	deploy_mode=COL(TXT)
