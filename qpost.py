@@ -5,7 +5,7 @@ from datetime import datetime as dtm,timedelta as tdt
 from uuid import uuid1 as uid
 
 point='http://172.31.16.16:39099/accounts'
-headers = {'content-type': 'application/json'}
+headers={'content-type':'application/json'}
 
 if len(sys.argv)<2:
     batch=1

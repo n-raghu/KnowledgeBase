@@ -1,10 +1,10 @@
 kafka:
-  host: 10.0.0.10
+  host: 172.16.1.141
   port: 9092
   cluster: false
 
 datastore:
-  host: 172.31.16.16
+  host: 172.16.1.164
   port: 54321
   uid: postgres
   pwd: reporter

@@ -1,0 +1,40 @@
+sudo yum install gcc bzip2-devel ncurses-devel gdbm-devel xz-devel sqlite-devel openssl-devel tk-devel uuid-devel readline-devel zlib
+-devel libffi-devel
+
+sudo amazon-linux-extras install docker
+
+sudo usermod -a -G docker ec2-user
+
+docker volume create --driver local -o device=/d-volumes/accountsVol -o type=none -o o=bind accounts
+
+docker container run --name pgDOCK -e POSTGRES_PASSWORD=reporter -d -p 54321:5432 -v accounts:/var/lib/postgresql/data postgres
+
+sudo yum install python37
+pip3.7 install --user virtualenv
+
+
+https://hevodata.com/blog/how-to-install-kafka-on-ubuntu/
+
+sudo apt-get install openjdk-8-jdk
+sudo apt-get install -y zookeeperd
+sudo systemctl enable zookeeper
+wget https://www.apache.org/dist/kafka/2.2.0/kafka_2.12-2.2.0.tgz
+sudo tar xvzf kafka_2.12-2.2.0.tgz -C /opt/kafka/
+
+/etc/profile
+export KAFKA_HOME="/opt/kafka/kafka_2.12-2.2.0"
+export KAFKA_HEAP_OPTS="-Xmx610M -Xms500M"
+export PATH="$PATH:${KAFKA_HOME}/bin"
+
+~/.bashrc
+alias sudo='sudo env PATH="$PATH"'
+
+Service: sudo nano /etc/systemd/system/kafka.service
+[Unit]
+Description=High-available, distributed message broker
+After=network.target
+[Service]
+User=kafka
+ExecStart=/opt/kafka/kafka_2.12-2.2.0/bin/kafka-server-start.sh /opt/kafka/kafka_2.12-2.2.0/config/server.properties > kafka.out 2> kafka.err
+[Install]
+WantedBy=multi-user.target
