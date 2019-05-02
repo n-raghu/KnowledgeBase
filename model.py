@@ -44,7 +44,7 @@ class Event(BASE):
 
 class User(BASE):
 	__tablename__='users'
-	uid=COL(TXT)
+	uid=COL(TXT,primary_key=True)
 	pwd=COL(TXT)
 	user_name=COL(TXT)
 
