@@ -76,7 +76,7 @@ class getPostAcc(Resource):
 		elif len(qpm)>1:
 			xClass=eventSession.query(A).filter(alchemyText(queryParser(qpm))).all()
 		else:
-			xClass=eventSession.query(A).all()
+			xClass=eventSession.query(A).filter(A.active==True).all()
 		eventSession.close()
 		for x in xClass:
 			x.__dict__.pop('_sa_instance_state',None)
