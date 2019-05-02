@@ -5,7 +5,7 @@ from yaml import safe_load
 with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
 
-c=Consumer({'bootstrap.servers':str(cfg['kafka']['host']),'group.id':'accounts-data','auto.offset.reset':'earliest'})
+c=Consumer({'bootstrap.servers':str(cfg['kafka']['host']),'group.id':'accounts-console','auto.offset.reset':'earliest'})
 
 def decode_dtm(obj):
     if '__datetime__' in obj:

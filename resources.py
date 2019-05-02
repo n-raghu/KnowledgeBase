@@ -88,7 +88,7 @@ class getPostAcc(Resource):
 			abort(400)
 		obo=request.get_json()
 		thisTopic=getTopic()
-		if isinstance(unp,list):
+		if isinstance(obo,list):
 			etype='bulk'
 		else:
 			etype='one'
