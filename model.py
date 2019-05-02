@@ -21,8 +21,9 @@ NUM=say.NUMERIC
 
 class Account(BASE):
 	__tablename__='accounts'
-	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
+	active=COL(BOOL)
 	account_name=COL(TXT)
+	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
 	instancecode=COL(TXT)
 	lms_custid=COL(BIGINT,nullable=False)
 	account_flag=COL(TXT)
