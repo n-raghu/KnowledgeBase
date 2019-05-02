@@ -28,6 +28,6 @@ while True:
     msg=c.poll(1.0)
     packet=validateMessage(msg)
     if packet:
-        print(msg.topic)
+        print(msg.topic())
 
 c.close()
