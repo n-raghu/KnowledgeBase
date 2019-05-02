@@ -1,4 +1,4 @@
-from model import Account as A
+from model import Account as A,Event as E
 from msgpack import unpackb
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng

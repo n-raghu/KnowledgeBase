@@ -21,16 +21,16 @@ NUM=say.NUMERIC
 
 class Account(BASE):
 	__tablename__='accounts'
+	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
+	account_name=COL(TXT)
 	instancecode=COL(TXT)
 	lms_custid=COL(BIGINT,nullable=False)
 	account_flag=COL(TXT)
-	account_name=COL(TXT)
 	deploy_mode=COL(TXT)
 	eae_integration=COL(BOOL)
 	channel_partner=COL(BOOL)
 	onboard_type=COL(TXT)
 	start_date=COL(DT)
-	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 
@@ -39,6 +39,13 @@ class Event(BASE):
 	eventid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
 	etime=COL(TIMES)
 	event=COL(TXT)
+	action=COL(TXT)
+
+class User(BASE):
+	__tablename__='users'
+	uid=COL(TXT)
+	pwd=COL(PWD)
+	user_name=COL(TXT)
 
 if __name__=='__main__':
 	from resources import urx
