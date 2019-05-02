@@ -87,12 +87,12 @@ class getPostAcc(Resource):
 		if not request.get_json():
 			abort(400)
 		obo=request.get_json()
-        thisTopic=getTopic()
-        if isinstance(unp,list):
-            etype='bulk'
-        else:
-            etype='one'
-        eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow()}
+		thisTopic=getTopic()
+		if isinstance(unp,list):
+			etype='bulk'
+		else:
+			etype='one'
+		eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow()}
 		P.poll(0)
 		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
