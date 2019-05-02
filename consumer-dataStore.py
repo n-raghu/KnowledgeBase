@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng
 from confluent_kafka import Consumer
 from yaml import safe_load
+from datetime import datetime as dtm
 
 with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
