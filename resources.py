@@ -115,21 +115,21 @@ class AccountID(Resource):
 			jlist.append(x.__dict__)
 		return jsonify(jlist)
 	def delete(self,accid):
-        obo={'aid':accid,'active':False}
+		obo={'aid':accid,'active':False}
 		thisTopic=getTopic('purge')
-        eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow()}
-        P.poll(0)
-        P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
-        P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow()}
+		P.poll(0)
+		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 	def put(self,accid):
 		obo=request.get_json()
-        obo['aid']=accid
-        thisTopic=getTopic('patch')
-        eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow()}
-        P.poll(0)
-        P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
-        P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		obo['aid']=accid
+		thisTopic=getTopic('patch')
+		eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow()}
+		P.poll(0)
+		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
 class getNewToken(Resource):
