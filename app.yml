@@ -8,7 +8,7 @@ datastore:
   port: 54321
   uid: postgres
   pwd: reporter
-  db: statzen
+  db: sales
   schema: public
 
 app:
