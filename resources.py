@@ -115,28 +115,21 @@ class AccountID(Resource):
 			jlist.append(x.__dict__)
 		return jsonify(jlist)
 	def delete(self,accid):
-		eventSession=dataSession()
-		dataObj=eventSession.query(A).filter(A.aid==accid).delete()
-		eventSession.commit()
-		eventSession.close()
-		return jsonify({'response': str(accid)+ ' deleted.'})
+        obo={'aid':accid,'active':False}
+		thisTopic=getTopic('purge')
+        eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow()}
+        P.poll(0)
+        P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+        P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		return None
 	def put(self,accid):
 		obo=request.get_json()
-		eventSession=dataSession()
-		dataObj=eventSession.query(A).filter(A.aid==accid)
-		eventSession.close()
-		for x in dataObj:
-			x.__dict__.pop('_sa_instance_state',None)
-			datax=x.__dict__
-		datax.update(obo)
-		eventSession=dataSession()
-		dataObj=eventSession.query(A).filter(A.aid==accid).delete()
-		eventSession.commit()
-		eventSession.close()
-		eventSession=dataSession()
-		eventSession.add(A(**datax))
-		eventSession.commit()
-		eventSession.close()
+        obo['aid']=accid
+        thisTopic=getTopic('patch')
+        eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow()}
+        P.poll(0)
+        P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+        P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
 class getNewToken(Resource):

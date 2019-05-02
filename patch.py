@@ -20,3 +20,22 @@ def getUser(accid):
     xClass=eventSession.query(A).filter(A.aid==accid)
     eventSession.close()
     return xClass
+
+
+
+
+		eventSession=dataSession()
+		dataObj=eventSession.query(A).filter(A.aid==accid)
+		eventSession.close()
+		for x in dataObj:
+			x.__dict__.pop('_sa_instance_state',None)
+			datax=x.__dict__
+		datax.update(obo)
+		eventSession=dataSession()
+		dataObj=eventSession.query(A).filter(A.aid==accid).delete()
+		eventSession.commit()
+		eventSession.close()
+		eventSession=dataSession()
+		eventSession.add(A(**datax))
+		eventSession.commit()
+		eventSession.close()
