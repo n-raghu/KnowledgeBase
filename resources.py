@@ -68,13 +68,13 @@ class getPostAcc(Resource):
 				col=k
 				val=v
 			if val.startswith('%') and val.endswith('%'):
-				xClass=eventSession.query(A).filter(getattr(A,col).like('%%%s%%' % val))
+				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col).like('%%%s%%' % val))
 			elif k.endswith('__between__'):
-				xClass=eventSession.query(A).filter(alchemyText(queryParser(qpm))).all()
+				xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 			else:
-				xClass=eventSession.query(A).filter(getattr(A,col)==val)
+				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col)==val)
 		elif len(qpm)>1:
-			xClass=eventSession.query(A).filter(alchemyText(queryParser(qpm))).all()
+			xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 		else:
 			xClass=eventSession.query(A).filter(A.active==True).all()
 		eventSession.close()
