@@ -8,7 +8,7 @@ from yaml import safe_load
 with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
 
-urx='postgresql://' +str(cfg['dataStore']['uid'])+ ':' +str(cfg['dataStore']['pwd'])+ '@' +str(cfg['dataStore']['host'])+ ':' +str(cfg['dataStore']['port'])+ '/' +cfg['dataStore']['db']
+urx='postgresql://' +str(cfg['datastore']['uid'])+ ':' +str(cfg['datastore']['pwd'])+ '@' +str(cfg['datastore']['host'])+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['db']
 c=Consumer({'bootstrap.servers': cfg['kafka']['host'],'group.id': 'accounts-events','auto.offset.reset': 'earliest'})
 
 def dataSession():

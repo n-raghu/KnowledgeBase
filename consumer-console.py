@@ -17,6 +17,6 @@ c.subscribe(topics)
 
 while True:
     msg=c.poll(1.0)
-    print(msg.topic())
+    print(msg.topic)
 
 c.close()
