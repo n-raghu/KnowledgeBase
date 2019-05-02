@@ -4,8 +4,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng
 from confluent_kafka import Consumer
 
-urx='postgresql://postgres:reporter@172.31.16.16:54321/statzen'
-c=Consumer({'bootstrap.servers': '10.0.0.10','group.id': 'accounts-data','auto.offset.reset': 'earliest'})
+urx='postgresql://postgres:reporter@172.16.1.164:54321/sales'
+c=Consumer({'bootstrap.servers': '172.16.1.141','group.id': 'accounts-data','auto.offset.reset': 'earliest'})
 
 def dataSession():
 	pgx=dbeng(urx)
@@ -18,7 +18,7 @@ def decode_dtm(obj):
         obj=dtm.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S")
     return obj
 
-c.subscribe(['topic-accounts-patch','topic-accounts-purge'])
+c.subscribe(['topic-accounts-patch','topic-accounts-purge','topic-accounts-add'])
 
 def validateMessage(msg):
     pct=True
