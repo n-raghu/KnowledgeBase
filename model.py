@@ -45,7 +45,7 @@ class Event(BASE):
 class User(BASE):
 	__tablename__='users'
 	uid=COL(TXT)
-	pwd=COL(PWD)
+	pwd=COL(TXT)
 	user_name=COL(TXT)
 
 if __name__=='__main__':
