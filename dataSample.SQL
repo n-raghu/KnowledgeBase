@@ -25,7 +25,7 @@ curl -i -H "Content-Type: application/json" -X POST -d '{"aid":949,"account_name
 CREATE TABLE IF NOT EXISTS accounts(
   instancecode TEXT,
   account_flag TEXT,
-  aid BIGINT GENERATED ALWAYS AS IDENTITY,
+  aid UUID DEFAULT uuid_generate_v1(),
   lms_custid BIGINT,
   account_name TEXT,
   deploy_mode TEXT,

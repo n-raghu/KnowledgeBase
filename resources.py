@@ -47,8 +47,16 @@ def encode_dtm(obj):
         return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S")}
     return obj
 
-def getTopic():
-	return 'topic-accounts-patch'
+def getTopic(eve='add'):
+    if eve=='add':
+        v_eve='topic-accounts-add'
+    elif eve=='patch':
+        v_eve='topic-accounts-patch'
+    elif eve=='purge':
+        v_eve='topic-accounts-purge'
+    else:
+        v_eve=False
+	return v_eve
 
 class getPostAcc(Resource):
 	def get(self):

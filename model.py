@@ -1,6 +1,8 @@
 import sqlalchemy as say
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime as dtm
+from sqlalchemy.dialects.postgresql import UUID
+from uuid import uuid1 as uid
 
 BASE=declarative_base()
 
@@ -20,7 +22,7 @@ NUM=say.NUMERIC
 class Account(BASE):
 	__tablename__='accounts'
 	instancecode=COL(TXT)
-	lms_custid=COL(BIGINT,primary_key=True)
+	lms_custid=COL(BIGINT,nullable=False)
 	account_flag=COL(TXT)
 	account_name=COL(TXT)
 	deploy_mode=COL(TXT)
@@ -28,7 +30,7 @@ class Account(BASE):
 	channel_partner=COL(BOOL)
 	onboard_type=COL(TXT)
 	start_date=COL(DT)
-	aid=COL(BIGINT)
+	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 
