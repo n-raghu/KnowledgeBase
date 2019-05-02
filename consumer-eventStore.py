@@ -9,7 +9,7 @@ with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
 
 urx='postgresql://' +str(cfg['dataStore']['uid'])+ ':' +str(cfg['dataStore']['pwd'])+ '@' +str(cfg['dataStore']['host'])+ ':' +str(cfg['dataStore']['port'])+ '/' +cfg['dataStore']['db']
-c=Consumer({'bootstrap.servers': cfg['kafka']['host'],'group.id': 'accounts-data','auto.offset.reset': 'earliest'})
+c=Consumer({'bootstrap.servers': cfg['kafka']['host'],'group.id': 'accounts-events','auto.offset.reset': 'earliest'})
 
 def dataSession():
 	pgx=dbeng(urx)
@@ -22,7 +22,7 @@ def decode_dtm(obj):
         obj=dtm.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S")
     return obj
 
-c.subscribe(['topic-accounts-patch','topic-accounts-purge','topic-accounts-add'])
+c.subscribe(['topic-events'])
 
 def validateMessage(msg):
     pct=True

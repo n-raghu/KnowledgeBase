@@ -34,6 +34,12 @@ class Account(BASE):
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 
+class Event(BASE):
+	__tablename__='events'
+	eventid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
+	etime=COL(TIMES)
+	event=COL(TXT)
+
 if __name__=='__main__':
 	from resources import urx
 	pge=say.create_engine(urx)
