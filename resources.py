@@ -102,6 +102,7 @@ class AccountID(Resource):
 	@jwt_required
 	def get(self,accid):
 		user=get_jwt_identity()
+        print(user)
 		if user!='nuPassword':
 			return jsonify({'response':'Incorrect/Tampered Token'})
 		print(user)
