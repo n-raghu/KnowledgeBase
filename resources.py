@@ -56,7 +56,7 @@ def getTopic(eve='add'):
         v_eve='topic-accounts-purge'
     else:
         v_eve=False
-	return v_eve
+    return v_eve
 
 class getPostAcc(Resource):
 	def get(self):
