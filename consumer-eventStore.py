@@ -40,13 +40,8 @@ while True:
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
         eventSession=dataSession()
-        if isinstance(unp,list):
-            print('Streaming list of ' +str(len(unp))+ ' accounts...')
-            unpList=[A(**u) for u in unp]
-            eventSession.add_all(unpList)
-        else:
-            eventSession.add(A(**unp))
-            print('One account...')
+        eventSession.add(E(**unp))
+        print('Event Recorded...')
         eventSession.commit()
         eventSession.close()
     else:

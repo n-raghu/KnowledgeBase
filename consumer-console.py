@@ -12,11 +12,22 @@ def decode_dtm(obj):
         obj=dtm.strptime(obj["as_str"], "%Y%m%dT%H:%M:%S")
     return obj
 
+def validateMessage(msg):
+    pct=True
+    if msg is None:
+        pct=False
+    elif msg.error():
+        print('Error: {}'.format(msg.error()))
+        pct=False
+    return pct
+
 topics=['topic-accounts-patch','topic-accounts-purge','topic-accounts-add','topic-events']
 c.subscribe(topics)
 
 while True:
     msg=c.poll(1.0)
-    print(msg.topic)
+    packet=validateMessage(msg)
+    if packet:
+        print(msg.topic)
 
 c.close()
