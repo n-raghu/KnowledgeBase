@@ -46,19 +46,17 @@ def getToken():
 idi=0
 qpo=[]
 
-if debug:
-    sys.exit()
-
-while True:
-    qpo.append(batchPoster())
-    idi+=1
-    d=int(N*(batch-idi))
-    if d>1 and d<N:
-        qpo.append(batchPoster(d))
-        break
-    elif d<1:
-        break
-    else:
-        continue
+if not debug:
+    while True:
+        qpo.append(batchPoster())
+        idi+=1
+        d=int(N*(batch-idi))
+        if d>1 and d<N:
+            qpo.append(batchPoster(d))
+            break
+        elif d<1:
+            break
+        else:
+            continue
 
 print(qpo)
