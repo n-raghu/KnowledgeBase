@@ -36,9 +36,9 @@ def queryParser(qList):
 			kSTR=k[:-11]
 			values2=v.split(',')
 			qpSTR=qpSTR +kSTR+ " BETWEEN '" +values2[0]+ "' AND '" +values2[1]+ "' AND "
-        elif v=='true' or v=='false':
-            qpSTR=qpSTR +k+ "='" +v+ "' AND "
-        else:
+		elif v=='true' or v=='false':
+			qpSTR=qpSTR +k+ "='" +v+ "' AND "
+		else:
 			qpSTR=qpSTR +k+ " LIKE '" +v+ "' AND "
 	if qpSTR.endswith(" AND "):
 		qpSTR=qpSTR[:-5]
