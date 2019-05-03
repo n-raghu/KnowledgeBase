@@ -7,6 +7,6 @@ api=Api(app)
 
 api.add_resource(getPostAcc,'/accounts')
 api.add_resource(AccountID,'/accounts/<accid>')
-api.add_resource(getNewToken,'/accounts/login')
+api.add_resource(getNewToken,'/login')
 
 app.run(debug=cfg['app']['debug'],host=cfg['app']['host'],port=cfg['app']['port'])
