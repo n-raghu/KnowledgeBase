@@ -2,7 +2,7 @@ from msgpack import packb
 from random import randint
 from flask import jsonify, abort, request, make_response, Flask
 from flask_restful import Api,Resource
-from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity)
+from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity,jwt_optional)
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng,text as alchemyText
 from datetime import datetime as dtm,timedelta as tdt
@@ -64,7 +64,7 @@ def getTopic(eve='get'):
 
 class getPostAcc(Resource):
 	@jwt_optional
-    def get(self):
+	def get(self):
 		jlist=[]
 		qpm=request.args
 		eventSession=dataSession()
@@ -86,16 +86,16 @@ class getPostAcc(Resource):
 		for x in xClass:
 			x.__dict__.pop('_sa_instance_state',None)
 			jlist.append(x.__dict__)
-        eowner=get_jwt_identity()
-        if not eowner:
-            eowner='anonymous call...'
+		eowner=get_jwt_identity()
+		if not eowner:
+			eowner='anonymous call...'
 		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner}
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(jlist)
 
 	@jwt_required
-    def post(self):
+	def post(self):
 		if not request.get_json():
 			abort(400)
 		obo=request.get_json()
@@ -125,8 +125,8 @@ class AccountID(Resource):
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(jlist)
 
-    @jwt_required
-    def delete(self,accid):
+	@jwt_required
+	def delete(self,accid):
 		obo={'aid':accid,'active':False}
 		thisTopic=getTopic('purge')
 		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
@@ -135,8 +135,8 @@ class AccountID(Resource):
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
-    @jwt_required
-    def put(self,accid):
+	@jwt_required
+	def put(self,accid):
 		obo=request.get_json()
 		obo['aid']=accid
 		thisTopic=getTopic('patch')
