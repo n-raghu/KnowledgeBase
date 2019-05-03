@@ -1,4 +1,4 @@
-debug=True
+debug=False
 
 import requests as req
 import random as R
