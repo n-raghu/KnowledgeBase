@@ -1,5 +1,3 @@
-debug=True
-
 import requests as req
 import random as R
 import sys
@@ -21,13 +19,16 @@ if len(sys.argv)<2:
     batch=1
 else:
     batch=float(sys.argv[1])
+    if batch==-1:
+        debug=True
+        batch=1
 
 instancelist=['swiss','US Farm','EU Farm']
 deploy_mode=['Potter','IM']
 auth=[{'uid':'admin','pwd':'adminpassword'},{'uid':'eaeuser','pwd':'eaeuserpassword'}
       ,{'uid':'raghu','pwd':'raghupassword'},{'uid':'yogesh','pwd':'yogeshpassword'}]
 
-def batchPoster(n=N,x=-1):
+def batchPoster(n=N):
     reqList=[]
     for i in range(0,n):
         document={"account_name":bgdata.create_company_name(),"instancecode":R.choice(instancelist)
@@ -36,7 +37,9 @@ def batchPoster(n=N,x=-1):
         ,"channel_partner":R.choice([True,False]),"onboard_type":R.choice(["custom","partner","direct"])
         ,"start_date":str(dtm.utcnow().date()-tdt(days=R.choice(range(10,1000))))}
         reqList.append(document)
-    return req.post(url=point,json=reqList,auth=x)
+        t=getToken()
+        dataHeadR={'Content-Type':'application/json','Authorization':'Bearer {}'.format(t.json())}
+    return req.post(url=point,json=reqList,headers=dataHeadR)
 
 def getToken():
     thisAuth=R.choice(auth)
