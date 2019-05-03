@@ -1,4 +1,4 @@
-debug=False
+debug=True
 
 import requests as req
 import random as R
@@ -27,7 +27,7 @@ deploy_mode=['Potter','IM']
 auth=[{'uid':'admin','pwd':'adminpassword'},{'uid':'eaeuser','pwd':'eaeuserpassword'}
       ,{'uid':'raghu','pwd':'raghupassword'},{'uid':'yogesh','pwd':'yogeshpassword'}]
 
-def batchPoster(n=N):
+def batchPoster(n=N,x=-1):
     reqList=[]
     for i in range(0,n):
         document={"account_name":bgdata.create_company_name(),"instancecode":R.choice(instancelist)
@@ -36,12 +36,13 @@ def batchPoster(n=N):
         ,"channel_partner":R.choice([True,False]),"onboard_type":R.choice(["custom","partner","direct"])
         ,"start_date":str(dtm.utcnow().date()-tdt(days=R.choice(range(10,1000))))}
         reqList.append(document)
-    return req.post(url=point,json=reqList,auth=getToken())
+    return req.post(url=point,json=reqList,auth=x)
 
 def getToken():
     thisAuth=R.choice(auth)
     token=req.post(url=access,json=thisAuth,verify=False)
-    return JWTAuth(token)
+    print(token)
+    return token
 
 idi=0
 qpo=[]
