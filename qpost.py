@@ -12,7 +12,7 @@ with open('app.yml') as ymlFile:
 
 point='http://172.16.1.164:39099/accounts'
 access='http://172.16.1.164:39099/login'
-N=10000
+N=1000
 headers={'content-type':'application/json'}
 
 debug=False
@@ -45,8 +45,6 @@ def batchPoster(n=N):
         reqList.append(document)
     t=getToken()
     dataHeadR={'Content-Type':'application/json','Authorization':'Bearer {}'.format(t.json())}
-    print(dataHeadR)
-    print(len(reqList))
     return req.post(url=point,json=reqList,headers=dataHeadR)
 
 idi=0
