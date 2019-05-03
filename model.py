@@ -41,6 +41,7 @@ class Event(BASE):
 	etime=COL(TIMES)
 	event=COL(TXT)
 	action=COL(TXT)
+	event_owner=COL(TXT,primary_key=True)
 
 class User(BASE):
 	__tablename__='users'

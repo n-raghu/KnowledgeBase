@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng,text as alchemyText
 from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
-from model import Account as A
+from model import Account as A,User as U
 from yaml import safe_load
 
 with open('app.yml') as ymlFile:
@@ -139,6 +139,11 @@ class getNewToken(Resource):
 		if not request.get_json():
 			abort(400)
 		obo=request.get_json()
-		username=request.json.get('username',None)
-		access_token=create_access_token(identity=username,expires_delta=tdt(seconds=cfg['app']['token']))
+        access_token='Unauthorized User...'
+		uname=request.json.get('uid',None)
+        paswd=request.json.get('pwd',None)
+        eventSession=dataSession()
+        userdoc=eventSession.query(U).filter(U.uid==uname).first()
+        if paswd==userdoc['pwd']:
+            access_token=create_access_token(identity=username,expires_delta=tdt(seconds=cfg['app']['token']))
 		return jsonify(access_token)

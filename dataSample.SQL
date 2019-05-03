@@ -35,3 +35,14 @@ CREATE TABLE IF NOT EXISTS accounts(
   start_date DATE,
   last_updated_time TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 )
+
+INSERT INTO users(uid,pwd,user_name)
+SELECT 'admin','adminpassword','administrator'
+UNION ALL
+SELECT 'raghu','raghupassword','raghunandan'
+UNION ALL
+SELECT 'yogesh','yogeshpassword','yogeshgupta'
+UNION ALL
+SELECT 'ieltest','ieltestpassword','ieltestuser'
+UNION ALL
+SELECT 'eaeuser','eaeuserpassword','eaeusername'
