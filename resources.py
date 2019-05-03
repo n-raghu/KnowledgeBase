@@ -145,5 +145,5 @@ class getNewToken(Resource):
 		eventSession=dataSession()
 		userdoc=eventSession.query(U).filter(U.uid==uname).first()
 		if paswd==userdoc.__dict__['pwd']:
-			access_token=create_access_token(identity=username,expires_delta=tdt(seconds=cfg['app']['token']))
+			access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
 		return jsonify(access_token)
