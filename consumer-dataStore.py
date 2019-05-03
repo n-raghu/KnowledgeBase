@@ -3,6 +3,7 @@ from msgpack import unpackb
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng
 from confluent_kafka import Consumer
+from uuid import uuid1 as uid
 from yaml import safe_load
 from datetime import datetime as dtm
 
@@ -47,9 +48,14 @@ while True:
         elif msg.topic()=='topic-accounts-add':
             if isinstance(unp,list):
                 print('Streaming list of ' +str(len(unp))+ ' accounts...')
-                unpList=[A(**u) for u in unp]
+                unpAccounts=[]
+                for u in unp:
+                    u['aid']=uid()
+                    unpAccounts.append(u)
+                unpList=[A(**u) for u in unpAccounts]
                 eventSession.add_all(unpList)
             else:
+                unp['aid']=uid()
                 eventSession.add(A(**unp))
                 print('One account...')
         eventSession.commit()

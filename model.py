@@ -2,7 +2,6 @@ import sqlalchemy as say
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime as dtm
 from sqlalchemy.dialects.postgresql import UUID
-from uuid import uuid1 as uid
 
 BASE=declarative_base()
 
@@ -23,7 +22,7 @@ class Account(BASE):
 	__tablename__='accounts'
 	active=COL(BOOL)
 	account_name=COL(TXT)
-	aid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
+	aid=COL(UUID(as_uuid=True),primary_key=True)
 	instancecode=COL(TXT)
 	lms_custid=COL(BIGINT,nullable=False)
 	account_flag=COL(TXT)
@@ -37,7 +36,7 @@ class Account(BASE):
 
 class Event(BASE):
 	__tablename__='events'
-	eventid=COL(UUID(as_uuid=True),primary_key=True,default=uid())
+	eventid=COL(UUID(as_uuid=True),primary_key=True)
 	etime=COL(TIMES)
 	event=COL(TXT)
 	action=COL(TXT)
