@@ -29,6 +29,11 @@ deploy_mode=['Potter','IM']
 auth=[{'uid':'admin','pwd':'adminpassword'},{'uid':'eaeuser','pwd':'eaeuserpassword'}
       ,{'uid':'raghu','pwd':'raghupassword'},{'uid':'yogesh','pwd':'yogeshpassword'}]
 
+def getToken():
+    thisAuth=R.choice(auth)
+    token=req.post(url=access,json=thisAuth,verify=False)
+    return token
+
 def batchPoster(n=N):
     reqList=[]
     for i in range(0,n):
@@ -41,13 +46,8 @@ def batchPoster(n=N):
     t=getToken()
     dataHeadR={'Content-Type':'application/json','Authorization':'Bearer {}'.format(t.json())}
     print(dataHeadR)
+    print(len(reqList))
     return req.post(url=point,json=reqList,headers=dataHeadR)
-
-def getToken():
-    thisAuth=R.choice(auth)
-    token=req.post(url=access,json=thisAuth,verify=False)
-    print(token)
-    return token
 
 idi=0
 qpo=[]
