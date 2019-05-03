@@ -49,19 +49,22 @@ def encode_dtm(obj):
         return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S")}
     return obj
 
-def getTopic(eve='add'):
+def getTopic(eve='get'):
     if eve=='add':
         v_eve='topic-accounts-add'
     elif eve=='patch':
         v_eve='topic-accounts-patch'
     elif eve=='purge':
         v_eve='topic-accounts-purge'
+    elif eve=='get':
+        v_eve='topic-accounts-get'
     else:
         v_eve=False
     return v_eve
 
 class getPostAcc(Resource):
-	def get(self):
+	@jwt_optional
+    def get(self):
 		jlist=[]
 		qpm=request.args
 		eventSession=dataSession()
@@ -83,18 +86,25 @@ class getPostAcc(Resource):
 		for x in xClass:
 			x.__dict__.pop('_sa_instance_state',None)
 			jlist.append(x.__dict__)
+        eowner=get_jwt_identity()
+        if not eowner:
+            eowner='anonymous call...'
+		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner}
+		P.poll(0)
+		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(jlist)
 
-	def post(self):
+	@jwt_required
+    def post(self):
 		if not request.get_json():
 			abort(400)
 		obo=request.get_json()
-		thisTopic=getTopic()
+		thisTopic=getTopic('add')
 		if isinstance(obo,list):
 			etype='bulk'
 		else:
 			etype='one'
-		eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow()}
+		eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
 		P.poll(0)
 		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
@@ -103,11 +113,6 @@ class getPostAcc(Resource):
 class AccountID(Resource):
 	@jwt_required
 	def get(self,accid):
-		user=get_jwt_identity()
-		print(user)
-		if user!='nuPassword':
-			return jsonify({'response':'Incorrect/Tampered Token'})
-		print(user)
 		eventSession=dataSession()
 		xClass=eventSession.query(A).filter(A.aid==accid)
 		eventSession.close()
@@ -115,20 +120,27 @@ class AccountID(Resource):
 		for x in xClass:
 			x.__dict__.pop('_sa_instance_state',None)
 			jlist.append(x.__dict__)
+		eventDoc={'event':getTopic(),'action':'get-id','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
+		P.poll(0)
+		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(jlist)
-	def delete(self,accid):
+
+    @jwt_required
+    def delete(self,accid):
 		obo={'aid':accid,'active':False}
 		thisTopic=getTopic('purge')
-		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow()}
+		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
 		P.poll(0)
 		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
-	def put(self,accid):
+
+    @jwt_required
+    def put(self,accid):
 		obo=request.get_json()
 		obo['aid']=accid
 		thisTopic=getTopic('patch')
-		eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow()}
+		eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
 		P.poll(0)
 		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
