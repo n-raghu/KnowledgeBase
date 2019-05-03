@@ -15,6 +15,7 @@ access='http://172.16.1.164:39099/login'
 N=10000
 headers={'content-type':'application/json'}
 
+debug=False
 if len(sys.argv)<2:
     batch=1
 else:
