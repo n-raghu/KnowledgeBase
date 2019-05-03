@@ -5,6 +5,7 @@ from datetime import datetime as dtm,timedelta as tdt
 from uuid import uuid1 as uid
 from yaml import safe_load
 from requests_jwt import JWTAuth
+from barnum import gen_data
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
