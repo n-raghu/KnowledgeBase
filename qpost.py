@@ -38,8 +38,9 @@ def batchPoster(n=N):
         ,"channel_partner":R.choice([True,False]),"onboard_type":R.choice(["custom","partner","direct"])
         ,"start_date":str(dtm.utcnow().date()-tdt(days=R.choice(range(10,1000))))}
         reqList.append(document)
-        t=getToken()
-        dataHeadR={'Content-Type':'application/json','Authorization':'Bearer {}'.format(t.json())}
+    t=getToken()
+    dataHeadR={'Content-Type':'application/json','Authorization':'Bearer {}'.format(t.json())}
+    print(dataHeadR)
     return req.post(url=point,json=reqList,headers=dataHeadR)
 
 def getToken():
