@@ -158,4 +158,7 @@ class getNewToken(Resource):
 		userdoc=eventSession.query(U).filter(U.uid==uname).first()
 		if paswd==userdoc.__dict__['pwd']:
 			access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
+            eventDoc={'event':getTopic('token'),'action':'access-token','etime':dtm.utcnow(),'event_owner':uname}
+            P.poll(0)
+            P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(access_token)
