@@ -9,7 +9,7 @@ from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
 from model import Account as A,User as U
 from yaml import safe_load
-from sqlalchemy_pagination import paginate
+from alchemy_pager import paginate
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
