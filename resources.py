@@ -66,8 +66,14 @@ class getPostAcc(Resource):
 	@jwt_optional
 	def get(self):
 		jlist=[]
-		qpm=request.args
-		qpm.to_dict(flat=False)
+		qpx=request.args
+		print(type(qpx))
+		qpx.to_dict(flat=False)
+		print(type(qpx))
+		qpm=qpx.to_dict(flat=False)
+		print(type(qpm))
+		print(qpx)
+		print(qpm)
 		rpage=request.args.get('__page__',1,type=int)
 		eventSession=dataSession()
 		del qpm['__page__']
