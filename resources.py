@@ -67,6 +67,7 @@ class getPostAcc(Resource):
 	def get(self):
 		jlist=[]
 		qpm=request.args
+        qpm.to_dict(flat=False)
 		rpage=request.args.get('__page__',1,type=int)
 		eventSession=dataSession()
 		del qpm['__page__']
