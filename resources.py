@@ -67,7 +67,9 @@ class getPostAcc(Resource):
 	def get(self):
 		jlist=[]
 		qpm=request.args
+		rpage=request.args.get('__page__',1,type=int)
 		eventSession=dataSession()
+        del qpm['__page__']
 		if len(qpm)==1:
 			for k,v in qpm.items():
 				col=k
@@ -77,7 +79,7 @@ class getPostAcc(Resource):
 			elif k.endswith('__between__'):
 				xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 			else:
-				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col)==val)
+				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col)==val).paginate(rpage,100,False).items
 		elif len(qpm)>1:
 			xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 		else:
