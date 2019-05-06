@@ -9,6 +9,7 @@ from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
 from model import Account as A,User as U
 from yaml import safe_load
+from sqlalchemy_pagination import paginate
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
@@ -67,13 +68,7 @@ class getPostAcc(Resource):
 	def get(self):
 		jlist=[]
 		qpx=request.args
-		print(type(qpx))
-		qpx.to_dict(flat=False)
-		print(type(qpx))
-		qpm=qpx.to_dict(flat=False)
-		print(type(qpm))
-		print(qpx)
-		print(qpm)
+		qpm=qpx.to_dict(flat=True)
 		rpage=request.args.get('__page__',1,type=int)
 		eventSession=dataSession()
 		del qpm['__page__']
@@ -86,7 +81,7 @@ class getPostAcc(Resource):
 			elif k.endswith('__between__'):
 				xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 			else:
-				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col)==val).paginate(rpage,100,False).items
+				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col)==val),rpage,100).items
 		elif len(qpm)>1:
 			xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 		else:
