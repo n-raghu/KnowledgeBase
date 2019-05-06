@@ -1,0 +1,2 @@
+- Store Accounts and Opportunities data in Account Lookup Service
+- All apps like LMS/PHISHPROOF/IPP/StatZen/Zoltar would connect to this datastore to get any data related to accounts and opportunities.
