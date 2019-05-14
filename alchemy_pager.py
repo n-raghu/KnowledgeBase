@@ -15,7 +15,7 @@ class Page(object):
         self.total=total
         self.pages=int(math.ceil(total/float(page_size)))
 
-def paginate(query,page page_size):
+def paginate(query,page,page_size):
     if page <= 0:
         raise AttributeError('page needs to be >= 1')
     if page_size <= 0:

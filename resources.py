@@ -96,8 +96,8 @@ class getPostAcc(Resource):
 		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner}
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
-        responser=make_response(jsonify(jlist),200)
-        responser.headers.extend({'page':xClass.page,'total':xClass.total})
+		responser=make_response(jsonify(jlist),200)
+		responser.headers.extend({'pages':rpage,'total':xClass.pages})
 		return responser
 
 	@jwt_required
