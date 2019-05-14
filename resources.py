@@ -81,13 +81,13 @@ class getPostAcc(Resource):
 			elif k.endswith('__between__'):
 				xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 			else:
-				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col)==val),rpage,100).items
+				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col)==val),rpage,100)
 		elif len(qpm)>1:
 			xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
 		else:
 			xClass=eventSession.query(A).filter(A.active==True).all()
 		eventSession.close()
-		for x in xClass:
+		for x in xClass.items:
 			x.__dict__.pop('_sa_instance_state',None)
 			jlist.append(x.__dict__)
 		eowner=get_jwt_identity()
@@ -96,7 +96,9 @@ class getPostAcc(Resource):
 		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner}
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
-		return jsonify(jlist)
+        responser=make_response(jsonify(jlist),200)
+        responser.headers.extend({'page':xClass.page,'total':xClass.total})
+		return responser
 
 	@jwt_required
 	def post(self):
