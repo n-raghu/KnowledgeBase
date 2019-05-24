@@ -19,3 +19,15 @@ Customer Management Service
 - *user_master* is a combination of *tbl_user_master* and *tbl_student_lookup* with an unique userid across farms. Text field to identify the user status(Active/Inactive/Delete).
 - *customer_groups* has all information about groups that each customer has created.
 - *user_groups* is a fact table which contains ID's of all userid and groupid representing the user membership with the groups.
+
+
+May 16:
+1. Map and search customers, No communication.
+Yogesh Suggestions:
+ - LMS should hold the account id.
+ - SFDC invokes API and gives accountdid to LMS.
+ - Two way communication between LMS and ALS.
+ - LMS gets account details from drop down for which no orgs created and IM chooses the appropriate one and LMS gives the orgid to ALS.
+2. Extend to other apps
+3. All systems should access ALS to get regarding customers on fly --Very far
+4. ALS should be a base for both LMS and PhishProof

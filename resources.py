@@ -9,46 +9,13 @@ from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
 from model import Account as A,User as U
 from yaml import safe_load
-from alchemy_pager import paginate
+from alchemy import *
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
 
 urx='postgresql://' +cfg['datastore']['uid']+ ':' +cfg['datastore']['pwd']+ '@' +cfg['datastore']['host']+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['db']
 P=Producer({'bootstrap.servers': cfg['kafka']['host']})
-
-def dataSession():
-	pgx=dbeng(urx)
-	SessionClass=sessionmaker(bind=pgx)
-	Session=SessionClass()
-	return Session
-
-def delivery_report(err,msg):
-    if err is not None:
-        print('Message delivery failed: {}'.format(err))
-    else:
-        print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
-
-def queryParser(qList):
-	nuList=[]
-	qpSTR=" "
-	for k,v in qList.items():
-		if k.endswith('__between__'):
-			kSTR=k[:-11]
-			values2=v.split(',')
-			qpSTR=qpSTR +kSTR+ " BETWEEN '" +values2[0]+ "' AND '" +values2[1]+ "' AND "
-		elif v=='true' or v=='false':
-			qpSTR=qpSTR +k+ "='" +v+ "' AND "
-		else:
-			qpSTR=qpSTR +k+ " LIKE '" +v+ "' AND "
-	if qpSTR.endswith(" AND "):
-		qpSTR=qpSTR[:-5]
-	return qpSTR
-
-def encode_dtm(obj):
-    if isinstance(obj, dtm):
-        return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S")}
-    return obj
 
 def getTopic(eve='get'):
     if eve=='add':
@@ -97,7 +64,7 @@ class getPostAcc(Resource):
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		responser=make_response(jsonify(jlist),200)
-		responser.headers.extend({'pages':rpage,'total':xClass.pages})
+		responser.headers.extend({'page':rpage,'total':xClass.pages})
 		return responser
 
 	@jwt_required
