@@ -36,11 +36,12 @@ class Account(BASE):
 
 class Event(BASE):
 	__tablename__='events'
-	eventid=COL(UUID(as_uuid=True),primary_key=True)
+	eventid=COL(TXT)
 	etime=COL(TIMES)
 	event=COL(TXT)
 	action=COL(TXT)
 	event_owner=COL(TXT,primary_key=True)
+	event_tbl_id=COL(UUID(as_uuid=True),primary_key=True)
 
 class User(BASE):
 	__tablename__='users'

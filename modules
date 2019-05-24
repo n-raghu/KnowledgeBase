@@ -9,4 +9,5 @@ pandas
 msgpack
 confluent-kafka
 requests-jwt
+bson
 barnum

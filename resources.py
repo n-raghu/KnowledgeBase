@@ -10,6 +10,7 @@ from confluent_kafka import Producer,Consumer,KafkaError
 from model import Account as A,User as U
 from yaml import safe_load
 from alchemy import *
+from bson.objectid import ObjectId as bsonid
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
@@ -38,21 +39,22 @@ class getPostAcc(Resource):
 		qpm=qpx.to_dict(flat=True)
 		rpage=request.args.get('__page__',1,type=int)
 		eventSession=dataSession()
-		del qpm['__page__']
+		if '__page__' in qpm:
+			del qpm['__page__']
 		if len(qpm)==1:
 			for k,v in qpm.items():
 				col=k
 				val=v
 			if val.startswith('%') and val.endswith('%'):
-				xClass=eventSession.query(A).filter(A.active==True,getattr(A,col).like('%%%s%%' % val))
+				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col).like('%%%s%%' % val)),rpage)
 			elif k.endswith('__between__'):
-				xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
+				xClass=paginate(eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))),rpage)
 			else:
-				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col)==val),rpage,100)
+				xClass=paginate(eventSession.query(A).filter(A.active==True,getattr(A,col)==val),rpage)
 		elif len(qpm)>1:
-			xClass=eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))).all()
+			xClass=paginate(eventSession.query(A).filter(A.active==True,alchemyText(queryParser(qpm))),rpage)
 		else:
-			xClass=eventSession.query(A).filter(A.active==True).all()
+			xClass=paginate(eventSession.query(A).filter(A.active==True),rpage)
 		eventSession.close()
 		for x in xClass.items:
 			x.__dict__.pop('_sa_instance_state',None)
@@ -60,7 +62,7 @@ class getPostAcc(Resource):
 		eowner=get_jwt_identity()
 		if not eowner:
 			eowner='anonymous call...'
-		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner}
+		eventDoc={'event':getTopic(),'action':'get','etime':dtm.utcnow(),'event_owner':eowner,'eventid':str(bsonid())}
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		responser=make_response(jsonify(jlist),200)
@@ -77,9 +79,10 @@ class getPostAcc(Resource):
 			etype='bulk'
 		else:
 			etype='one'
-		eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
+		ebsonid=str(bsonid())
+		eventDoc={'event':thisTopic,'action':etype,'etime':dtm.utcnow(),'event_owner':get_jwt_identity(),'eventid':ebsonid}
 		P.poll(0)
-		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		P.produce(thisTopic,packb((obo,ebsonid,thisTopic),default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
@@ -93,7 +96,7 @@ class AccountID(Resource):
 		for x in xClass:
 			x.__dict__.pop('_sa_instance_state',None)
 			jlist.append(x.__dict__)
-		eventDoc={'event':getTopic(),'action':'get-id','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
+		eventDoc={'event':getTopic(),'action':'get-id','etime':dtm.utcnow(),'event_owner':get_jwt_identity(),'eventid':str(bsonid())}
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(jlist)
@@ -102,9 +105,10 @@ class AccountID(Resource):
 	def delete(self,accid):
 		obo={'aid':accid,'active':False}
 		thisTopic=getTopic('purge')
-		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
+		ebsonid=str(bsonid())
+		eventDoc={'event':thisTopic,'action':'purge','etime':dtm.utcnow(),'event_owner':get_jwt_identity(),'eventid':ebsonid}
 		P.poll(0)
-		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		P.produce(thisTopic,packb((obo,ebsonid,thisTopic),default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
@@ -113,9 +117,10 @@ class AccountID(Resource):
 		obo=request.get_json()
 		obo['aid']=accid
 		thisTopic=getTopic('patch')
-		eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow(),'event_owner':get_jwt_identity()}
+		ebsonid=str(bsonid())
+		eventDoc={'event':thisTopic,'action':'patch','etime':dtm.utcnow(),'event_owner':get_jwt_identity(),'eventid':ebsonid}
 		P.poll(0)
-		P.produce(thisTopic,packb(obo,default=encode_dtm,use_bin_type=True),callback=delivery_report)
+		P.produce(thisTopic,packb((obo,ebsonid,thisTopic),default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return None
 
@@ -131,7 +136,7 @@ class getNewToken(Resource):
 		userdoc=eventSession.query(U).filter(U.uid==uname).first()
 		if paswd==userdoc.__dict__['pwd']:
 			access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
-			eventDoc={'event':'access-tokens','action':'gen-access-token','etime':dtm.utcnow(),'event_owner':uname}
+			eventDoc={'event':'access-tokens','action':'gen-access-token','etime':dtm.utcnow(),'event_owner':uname,'eventid':str(bsonid())}
 			P.poll(0)
 			P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(access_token)

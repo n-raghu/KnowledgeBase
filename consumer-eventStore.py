@@ -40,7 +40,7 @@ while True:
     packet=validateMessage(msg)
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
-        unp['eventid']=uid()
+        unp['event_tbl_id']=uid()
         eventSession=dataSession()
         eventSession.add(E(**unp))
         print('Event Recorded...')
