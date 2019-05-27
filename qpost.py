@@ -68,7 +68,7 @@ if not debug:
             kounter=0
             ziz(360)
         elif kounter%100==0:
-            print('Short Break...')
+            print('Break...')
             ziz(9)
 
 print(qpo)
