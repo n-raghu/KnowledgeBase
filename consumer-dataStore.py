@@ -50,6 +50,8 @@ def validateMessage(msgTup):
 
 while True:
     msgTup=C.poll(1.0)
+    if not msgTup:
+        continue
     packet=validateMessage(msgTup)
     if packet:
         msg,ebsonid,eventClass=msgTup
