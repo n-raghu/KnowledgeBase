@@ -35,6 +35,7 @@ def validateMessage(msg):
         pct=False
     return pct
 
+kounter=0
 while True:
     msg=c.poll(1.0)
     packet=validateMessage(msg)
@@ -43,7 +44,8 @@ while True:
         unp['event_tbl_id']=U4()
         eventSession=dataSession()
         eventSession.add(E(**unp))
-        print('Event Recorded...')
+        kounter+=1
+        print('Event Recorded...' +str(kounter))
         eventSession.commit()
         eventSession.close()
     else:
