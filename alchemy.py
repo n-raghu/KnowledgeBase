@@ -16,7 +16,7 @@ class Page(object):
         self.total=total
         self.pages=int(math.ceil(total/float(page_size)))
 
-def dataSession():
+def dataSession(urx):
 	pgx=dbeng(urx)
 	SessionClass=sessionmaker(bind=pgx)
 	Session=SessionClass()

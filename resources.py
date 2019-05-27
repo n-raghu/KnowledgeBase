@@ -37,7 +37,7 @@ class getPostAcc(Resource):
 		qpx=request.args
 		qpm=qpx.to_dict(flat=True)
 		rpage=request.args.get('__page__',1,type=int)
-		eventSession=dataSession()
+		eventSession=dataSession(urx)
 		if '__page__' in qpm:
 			del qpm['__page__']
 		if len(qpm)==1:
@@ -88,7 +88,7 @@ class getPostAcc(Resource):
 class AccountID(Resource):
 	@jwt_required
 	def get(self,accid):
-		eventSession=dataSession()
+		eventSession=dataSession(urx)
 		xClass=eventSession.query(A).filter(A.aid==accid)
 		eventSession.close()
 		jlist=[]
@@ -131,11 +131,11 @@ class getNewToken(Resource):
 		access_token='Unauthorized User...'
 		uname=request.json.get('uid',None)
 		paswd=request.json.get('pwd',None)
-		eventSession=dataSession()
+		eventSession=dataSession(urx)
 		userdoc=eventSession.query(U).filter(U.uid==uname).first()
 		eventSession.close()
 		if paswd==userdoc.__dict__['pwd']:
-			eventSession=dataSession()
+			eventSession=dataSession(urx)
 			roledoc=eventSession.query(UR).filter(UR.rid==userdoc.__dict__['roleid']).first()
 			eventSession.close()
 			tokenTime=roledoc.__dict__['tokentime']
