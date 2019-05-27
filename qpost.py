@@ -49,22 +49,25 @@ def batchPoster(n=N):
     return req.post(url=point,json=reqList,headers=dataHeadR)
 
 idi=0
+kounter=0
 qpo=[]
 
 if not debug:
     while True:
         qpo.append(batchPoster())
         idi+=1
+        kounter+=1
         d=int(N*(batch-idi))
         if d>1 and d<N:
             qpo.append(batchPoster(d))
             break
         elif d<1:
             break
-        if idi>1600:
-            print('Sleeping 366')
+        if kounter>1600:
+            print('Counter Reset...')
+            kounter=0
             ziz(360)
-        elif idi>100:
-            print('Sleeping 10')
+        elif kounter>100:
+            print('Short Break...')
 
 print(qpo)
