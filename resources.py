@@ -141,7 +141,7 @@ class getNewToken(Resource):
 			eventSession.close()
 			tokenTime=roledoc.__dict__['tokentime']
 			if tokenTime==-1:
-				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
+				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=3116969069))
 			else:
 				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=tokenTime)
 			eventDoc={'event':'access-tokens','action':'gen-access-token','etime':dtm.utcnow(),'event_owner':uname,'eventid':str(bsonid())}
