@@ -3,12 +3,12 @@ from random import randint
 from flask import jsonify, abort, request, make_response, Flask
 from flask_restful import Api,Resource
 from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity,jwt_optional)
-from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
 from model import Account as A,User as U,UserRole as UR
 from yaml import safe_load
-from alchemy import paginate,dataSession,queryParser,delivery_report,encode_dtm
+from alchemy import paginate,dataSession,queryParser,delivery_report,encode_dtm,alchemyText
 from bson.objectid import ObjectId as bsonid
+from datetime import datetime as dtm,timedelta as tdt
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
