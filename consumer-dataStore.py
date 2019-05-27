@@ -38,24 +38,21 @@ def delivery_report(err,msg):
 
 C.subscribe(['topic-accounts-patch','topic-accounts-purge','topic-accounts-add'])
 
-def validateMessage(msgTup):
-    pct=True
-    msg,_,_=msgTup
+def validateMessage(msg):
     if msg is None:
         pct=False
     elif msg.error():
         print('Error: {}'.format(msg.error()))
         pct=False
+    else:
+        pct=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
     return pct
 
 while True:
-    msgTup=C.poll(1.0)
-    if not msgTup:
-        continue
-    packet=validateMessage(msgTup)
+    msg=C.poll(1.0)
+    packet=validateMessage(msg)
     if packet:
-        msg,ebsonid,eventClass=msgTup
-        unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
+        unp,ebsonid,eventClass=msg
         eventSession=dataSession()
         if msg.topic()=='topic-accounts-patch':
             eventSession.query(A).filter(A.aid==unp['aid']).update(unp)
@@ -73,7 +70,7 @@ while True:
                 eventSession.add_all(unpList)
             else:
                 unp['aid']=uid()
-                u['last_mod_stamp']=dtm.utcnow()
+                unp['last_mod_stamp']=dtm.utcnow()
                 eventSession.add(A(**unp))
                 print('One account...')
         eventSession.commit()
@@ -83,4 +80,5 @@ while True:
         eventSession.close()
     else:
         continue
+
 C.close()
