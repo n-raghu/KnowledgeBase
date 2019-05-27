@@ -3,7 +3,7 @@ from msgpack import unpackb
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng
 from confluent_kafka import Consumer
-from uuid import uuid1 as uid
+from uuid import uuid1 as uid,uuid4 as U4
 from yaml import safe_load
 from datetime import datetime as dtm
 
@@ -40,7 +40,7 @@ while True:
     packet=validateMessage(msg)
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
-        unp['event_tbl_id']=uid()
+        unp['event_tbl_id']=U4()
         eventSession=dataSession()
         eventSession.add(E(**unp))
         print('Event Recorded...')
