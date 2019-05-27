@@ -63,11 +63,12 @@ if not debug:
             break
         elif d<1:
             break
-        if kounter>1600:
+        if kounter%1600==0:
             print('Counter Reset...')
             kounter=0
             ziz(360)
-        elif kounter>100:
+        elif kounter%100==0:
             print('Short Break...')
+            ziz(9)
 
 print(qpo)
