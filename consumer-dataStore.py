@@ -52,7 +52,7 @@ while True:
     msg=C.poll(1.0)
     packet=validateMessage(msg)
     if packet:
-        unp,ebsonid,eventClass=msg
+        unp,ebsonid,eventClass=pct
         eventSession=dataSession()
         if msg.topic()=='topic-accounts-patch':
             eventSession.query(A).filter(A.aid==unp['aid']).update(unp)
