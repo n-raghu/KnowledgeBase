@@ -6,6 +6,7 @@ from uuid import uuid1 as uid
 from yaml import safe_load
 from requests_jwt import JWTAuth
 from barnum import gen_data as bgdata
+from time import sleep as ziz
 
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
@@ -60,7 +61,10 @@ if not debug:
             break
         elif d<1:
             break
-        else:
-            continue
+        if idi>1600:
+            print('Sleeping 366')
+            ziz(360)
+        elif idi>100:
+            print('Sleeping 10')
 
 print(qpo)
