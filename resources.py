@@ -137,7 +137,7 @@ class getNewToken(Resource):
 		eventSession.close()
 		if paswd==userdoc.__dict__['pwd']:
 			eventSession=dataSession()
-			roledoc=eventSession.query(UR).filter(UR.rid=userdoc.__dict__['roleid']).first()
+			roledoc=eventSession.query(UR).filter(UR.rid==userdoc.__dict__['roleid']).first()
 			eventSession.close()
 			tokenTime=roledoc.__dict__['tokentime']
 			if tokenTime==-1:
