@@ -143,7 +143,7 @@ class getNewToken(Resource):
 			if tokenTime==-1:
 				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=3116969069))
 			else:
-				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=tokenTime)
+				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=tokenTime))
 			eventDoc={'event':'access-tokens','action':'gen-access-token','etime':dtm.utcnow(),'event_owner':uname,'eventid':str(bsonid())}
 			P.poll(0)
 			P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
