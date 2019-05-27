@@ -74,7 +74,7 @@ while True:
                 eventSession.add(A(**unp))
                 print('One account...')
         eventSession.commit()
-        eventDoc={'event':eventClass,'action':'__close_event__','etime':dtm.utcnow(),'event_owner':'__consumer__','eventid':ebsonid}
+        eventDoc={'event':eventClass,'action':'__close_event__','etime':dtm.utcnow(),'event_owner':'__parent__','eventid':ebsonid}
         P.poll(0)
         P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
         eventSession.close()
