@@ -16,20 +16,6 @@ SELECT 'ieltest','ieltestpassword','ieltestuser',2
 UNION ALL
 SELECT 'eaeuser','eaeuserpassword','eaeusername',101
 
-CREATE TABLE IF NOT EXISTS accounts(
-  instancecode TEXT,
-  account_flag TEXT,
-  aid UUID DEFAULT uuid_generate_v1(),
-  lms_custid BIGINT,
-  account_name TEXT,
-  deploy_mode TEXT,
-  eae_integration BOOL,
-  channel_partner BOOL,
-  onboard_type TEXT,
-  start_date DATE,
-  last_updated_time TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
-)
-
 {'aid':999,'account_name':'NuClient','instancecode':'eu','lms_custid':199,'deploy_mode':'direct','account_flag':TRUE,'eae_integration':FALSE,'channel_partner':FALSE,'onboard_type':'custom','start_date':dtm.utcnow(),'last_updated_time':dtm.utcnow()}
 
 {"aid":999,"account_name":"WestClient","instancecode":"us-farm","lms_custid":466,"deploy_mode":"direct","account_flag":TRUE,"eae_integration":FALSE,"channel_partner":FALSE,"onboard_type":"custom","start_date":dtm.utcnow(),"last_updated_time":dtm.utcnow()}
