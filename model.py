@@ -48,6 +48,13 @@ class User(BASE):
 	uid=COL(TXT,primary_key=True)
 	pwd=COL(TXT)
 	user_name=COL(TXT)
+	roleid=COL(INT)
+
+class Role(BASE):
+	__tablename__='userroles'
+	rid=COL(INT,primary_key=True)
+	rolename=COL(TXT)
+	tokentime=COL(INT)
 
 if __name__=='__main__':
 	from resources import urx

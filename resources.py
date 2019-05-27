@@ -134,8 +134,16 @@ class getNewToken(Resource):
 		paswd=request.json.get('pwd',None)
 		eventSession=dataSession()
 		userdoc=eventSession.query(U).filter(U.uid==uname).first()
+		eventSession.close()
 		if paswd==userdoc.__dict__['pwd']:
-			access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
+			eventSession=dataSession()
+			roledoc=eventSession.query(UR).filter(UR.rid=userdoc.__dict__['roleid']).first()
+			eventSession.close()
+			tokenTime=roledoc.__dict__['tokentime']
+			if tokenTime==-1:
+				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=cfg['app']['token']))
+			else:
+				access_token=create_access_token(identity=uname,expires_delta=tdt(seconds=tokenTime)
 			eventDoc={'event':'access-tokens','action':'gen-access-token','etime':dtm.utcnow(),'event_owner':uname,'eventid':str(bsonid())}
 			P.poll(0)
 			P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)

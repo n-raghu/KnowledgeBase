@@ -1,13 +1,20 @@
-INSERT INTO users(uid,pwd,user_name)
-SELECT 'admin','adminpassword','administrator'
+INSERT INTO userroles(rid,rolename,tokentime)
+SELECT '1','poweruser',-1
 UNION ALL
-SELECT 'raghu','raghupassword','raghunandan'
+SELECT '2','orgadmin',360
 UNION ALL
-SELECT 'yogesh','yogeshpassword','yogeshgupta'
+SELECT '101','user',60
+
+INSERT INTO users(uid,pwd,user_name,roleid)
+SELECT 'admin','adminpassword','administrator',1
 UNION ALL
-SELECT 'ieltest','ieltestpassword','ieltestuser'
+SELECT 'raghu','raghupassword','raghunandan',1
 UNION ALL
-SELECT 'eaeuser','eaeuserpassword','eaeusername'
+SELECT 'yogesh','yogeshpassword','yogeshgupta',1
+UNION ALL
+SELECT 'ieltest','ieltestpassword','ieltestuser',2
+UNION ALL
+SELECT 'eaeuser','eaeuserpassword','eaeusername',101
 
 CREATE TABLE IF NOT EXISTS accounts(
   instancecode TEXT,
