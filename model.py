@@ -51,7 +51,7 @@ class User(BASE):
 	user_name=COL(TXT)
 	roleid=COL(INT)
 
-class Role(BASE):
+class UserRole(BASE):
 	__tablename__='userroles'
 	rid=COL(INT,primary_key=True)
 	rolename=COL(TXT)

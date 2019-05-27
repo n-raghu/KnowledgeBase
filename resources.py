@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng,text as alchemyText
 from datetime import datetime as dtm,timedelta as tdt
 from confluent_kafka import Producer,Consumer,KafkaError
-from model import Account as A,User as U
+from model import Account as A,User as U,UserRole as UR
 from yaml import safe_load
 from alchemy import *
 from bson.objectid import ObjectId as bsonid
