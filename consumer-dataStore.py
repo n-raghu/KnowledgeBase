@@ -65,11 +65,13 @@ while True:
                 unpAccounts=[]
                 for u in unp:
                     u['aid']=uid()
+                    u['last_mod_stamp']=dtm.utcnow()
                     unpAccounts.append(u)
                 unpList=[A(**u) for u in unpAccounts]
                 eventSession.add_all(unpList)
             else:
                 unp['aid']=uid()
+                u['last_mod_stamp']=dtm.utcnow()
                 eventSession.add(A(**unp))
                 print('One account...')
         eventSession.commit()
@@ -79,5 +81,4 @@ while True:
         eventSession.close()
     else:
         continue
-
 C.close()

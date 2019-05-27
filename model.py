@@ -31,6 +31,7 @@ class Account(BASE):
 	channel_partner=COL(BOOL)
 	onboard_type=COL(TXT)
 	start_date=COL(DT)
+	last_mod_stamp=COL(TIMES)
 	def __repr__(self):
 		return "<A('%s')>" % (self.aid)
 
