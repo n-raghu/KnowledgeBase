@@ -42,19 +42,17 @@ unpList=[]
 while True:
     msg=c.poll(1.0)
     packet=validateMessage(msg)
+    now=tpc()
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
         unp['event_tbl_id']=U4()
         unpList.append(E(**unp))
-        now=tpc()
-        if now-lastpush>59 or len(unpList)>1000:
-            eventSession=dataSession()
-            eventSession.add_all(unpList)
-            eventSession.commit()
-            eventSession.close()
-            unpList.clear()
-            lastpush=tpc()
-    else:
-        continue
+    if now-lastpush>59 or len(unpList)>1000:
+        eventSession=dataSession()
+        eventSession.add_all(unpList)
+        eventSession.commit()
+        eventSession.close()
+        unpList.clear()
+        lastpush=tpc()
 
 c.close()
