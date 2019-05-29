@@ -47,12 +47,12 @@ while True:
         unp['event_tbl_id']=U4()
         unpList.append(E(**unp))
         now=tpc()
-        if len(unpList)>1000 or now-lastpush>59.0:
+        if now-lastpush>59 or len(unpList)>1000:
             eventSession=dataSession()
             eventSession.add_all(unpList)
             eventSession.commit()
             eventSession.close()
-            unpList=[]
+            unpList.clear()
             lastpush=tpc()
     else:
         continue
