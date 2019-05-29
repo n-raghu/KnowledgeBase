@@ -64,7 +64,7 @@ if not debug:
         elif d<1:
             break
         elif kounter%100==0:
-            print('Break...')
-            ziz(9)
+            ziz(3)
 
-print(qpo)
+print('Batches Posted: ' +str(len(qpo)))
+print('Requests Per Batch: ' +str(N))
