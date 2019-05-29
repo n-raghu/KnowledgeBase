@@ -63,9 +63,6 @@ if not debug:
             break
         elif d<1:
             break
-        if kounter%500==0:
-            print('Counter Reset...')
-            ziz(360)
         elif kounter%100==0:
             print('Break...')
             ziz(9)
