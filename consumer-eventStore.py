@@ -6,7 +6,7 @@ from confluent_kafka import Consumer
 from uuid import uuid1 as uid,uuid4 as U4
 from yaml import safe_load
 from datetime import datetime as dtm
-from time import sleep as ziz
+from time import perf_counter as tpc
 
 with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
@@ -36,21 +36,24 @@ def validateMessage(msg):
         pct=False
     return pct
 
-kounter=0
+lastpush=tpc()
+unpList=[]
+
 while True:
     msg=c.poll(1.0)
     packet=validateMessage(msg)
     if packet:
         unp=unpackb(msg.value(),object_hook=decode_dtm,raw=False)
         unp['event_tbl_id']=U4()
-        eventSession=dataSession()
-        eventSession.add(E(**unp))
-        kounter+=1
-        print('Event Recorded...' +str(kounter))
-        eventSession.commit()
-        eventSession.close()
-        if kounter%500==0:
-            ziz(99)
+        unpList.append(E(**unp))
+        now=tpc()
+        if len(unpList)>1000 or now-lastpush>59.0:
+            eventSession=dataSession()
+            eventSession.add_all(unpList)
+            eventSession.commit()
+            eventSession.close()
+            unpList=[]
+            lastpush=tpc()
     else:
         continue
 
