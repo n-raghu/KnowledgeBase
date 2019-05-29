@@ -6,6 +6,7 @@ from confluent_kafka import Consumer
 from uuid import uuid1 as uid,uuid4 as U4
 from yaml import safe_load
 from datetime import datetime as dtm
+from time import sleep as ziz
 
 with open('app.yml','r') as yFile:
     cfg=safe_load(yFile)
@@ -48,6 +49,8 @@ while True:
         print('Event Recorded...' +str(kounter))
         eventSession.commit()
         eventSession.close()
+        if kounter%500==0:
+            ziz(99)
     else:
         continue
 

@@ -51,7 +51,7 @@ def encode_dtm(obj):
         return {'__datetime__': True, 'as_str': obj.strftime("%Y%m%dT%H:%M:%S")}
     return obj
 
-def paginate(query,page,page_size=1000):
+def paginate(query,page,page_size=100):
     if page <= 0:
         raise AttributeError('page needs to be >= 1')
     if page_size <= 0:
