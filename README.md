@@ -12,11 +12,11 @@ All actions performed with the endpoints are tracked and asynchronously recorded
 ### Search API
 Salient feature of search API include: <br>
     - Pagination <br>
-    http://172.x.x.172:39099/api/accounts?__page__=100 <br>
+    172.x.x.172:39099/api/accounts?__page__=100 <br>
     - Integrated with '%' and works very similar to database LIKE operator <br>
-    http://172.x.x.172:39099/api/accounts?__page__=100&accountname=%tech% <br>
+    172.x.x.172:39099/api/accounts?__page__=100&accountname=%tech% <br>
     - any parameter can be suffixed with _between_ operator to get values between the parameter. <br>
-    http://172.x.x.172:39099/api/accounts?__page__=100&accountname=%tech%&onboarddate__between__=20190101,20190331 <br>
+    172.x.x.172:39099/api/accounts?__page__=100&accountname=%tech%&onboarddate__between__=20190101,20190331 <br>
 
 
 ### Deployment
