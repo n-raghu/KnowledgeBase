@@ -10,7 +10,7 @@ All endpoints are designed to use **JWT** Authentication.
 All actions performed with the endpoints are tracked and asynchronously recorded into the database in the form of events which would be a starting point for _Complex Event Processing_
 
 ### Search API
-Salient feature of search API include:
+Salient feature of search API include: <br>
     - Pagination <br>
     http://172.x.x.172:39099/api/accounts?__page__=100 <br>
     - Integrated with '%' and works very similar to database LIKE operator <br>
