@@ -23,3 +23,4 @@ Salient feature of search API include: <br>
 _I'm preparing a document to deploy the service using ECS images_
 
 ### Working Principle
+_To be documented_
