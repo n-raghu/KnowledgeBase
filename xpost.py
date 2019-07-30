@@ -27,6 +27,8 @@ def batchPoster(n):
         ,"channel_partner":R.choice([True,False]),"onboard_type":R.choice(["custom","partner","direct"])
         ,"start_date":str(dtm.utcnow().date()-tdt(days=R.choice(range(10,1000))))}
         reqList.append(document)
+        if n==1:
+            reqList=document
     print(json.dumps(reqList))
     return None
 
