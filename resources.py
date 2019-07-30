@@ -66,7 +66,7 @@ class getPostAcc(Resource):
 		P.poll(0)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		responser=make_response(jsonify(jlist),200)
-		responser.headers.extend({'page':rpage,'total':xClass.pages})
+		responser.headers.extend({'page':rpage, 'page_size':100, 'total':xClass.pages})
 		return responser
 
 	@jwt_required
