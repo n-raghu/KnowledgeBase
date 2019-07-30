@@ -11,8 +11,8 @@ from time import sleep as ziz
 with open('app.yml') as ymlFile:
     cfg=safe_load(ymlFile)
 
-point='http://172.16.1.164:39099/accounts'
-access='http://172.16.1.164:39099/login'
+point='http://172.16.1.164:39099/v1/accounts'
+access='http://172.16.1.164:39099/v1/login'
 N=1000
 headers={'content-type':'application/json'}
 
