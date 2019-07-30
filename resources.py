@@ -1,33 +1,35 @@
-from msgpack import packb
 from random import randint
-from flask import jsonify, abort, request, make_response, Flask
-from flask_restful import Api,Resource
-from flask_jwt_extended import (JWTManager, jwt_required, create_access_token,get_jwt_identity,jwt_optional)
-from confluent_kafka import Producer,Consumer,KafkaError
-from model import Account as A,User as U,UserRole as UR
-from yaml import safe_load
-from alchemy import paginate,dataSession,queryParser,delivery_report,encode_dtm,alchemyText
-from bson.objectid import ObjectId as bsonid
 from datetime import datetime as dtm,timedelta as tdt
 
+from msgpack import packb
+from yaml import safe_load
+from confluent_kafka import Producer, Consumer, KafkaError
+from flask import jsonify, abort, request, make_response, Flask
+from flask_restful import Api,Resource
+from flask_jwt_extended import (JWTManager, jwt_required, create_access_token, get_jwt_identity, jwt_optional)
+from bson.objectid import ObjectId as bsonid
+
+from model import Account as A, User as U, UserRole as UR
+from alchemy import paginate, dataSession, queryParser, delivery_report, encode_dtm, alchemyText
+
 with open('app.yml') as ymlFile:
-    cfg=safe_load(ymlFile)
+	cfg=safe_load(ymlFile)
 
 urx='postgresql://' +cfg['datastore']['uid']+ ':' +cfg['datastore']['pwd']+ '@' +cfg['datastore']['host']+ ':' +str(cfg['datastore']['port'])+ '/' +cfg['datastore']['db']
 P=Producer({'bootstrap.servers': cfg['kafka']['host']})
 
 def getTopic(eve='get'):
-    if eve=='add':
-        v_eve='topic-accounts-add'
-    elif eve=='patch':
-        v_eve='topic-accounts-patch'
-    elif eve=='purge':
-        v_eve='topic-accounts-purge'
-    elif eve=='get':
-        v_eve='topic-accounts-get'
-    else:
-        v_eve=False
-    return v_eve
+	if eve=='add':
+		v_eve='topic-accounts-add'
+	elif eve=='patch':
+		v_eve='topic-accounts-patch'
+	elif eve=='purge':
+		v_eve='topic-accounts-purge'
+	elif eve=='get':
+		v_eve='topic-accounts-get'
+	else:
+		v_eve=False
+	return v_eve
 
 class getPostAcc(Resource):
 	@jwt_optional
@@ -146,3 +148,14 @@ class getNewToken(Resource):
 			P.poll(0)
 			P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		return jsonify(access_token)
+
+class GetEvents(Resource):
+	def get(self,eid):
+		eventSession=dataSession(urx)
+		xClass=eventSession.query(E).filter(E.eventid==eid)
+		eventSession.close()
+		jlist=[]
+		for x in xClass:
+			x.__dict__.pop('_sa_instance_state',None)
+			jlist.append(x.__dict__)
+		return jsonify(jlist)
