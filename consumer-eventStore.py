@@ -3,7 +3,7 @@ from msgpack import unpackb
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine as dbeng
 from confluent_kafka import Consumer
-from uuid import uuid1 as uid,uuid4 as U4
+from uuid import uuid1 as uid, uuid4 as U4
 from yaml import safe_load
 from datetime import datetime as dtm
 from time import perf_counter as tpc
