@@ -1,4 +1,4 @@
-from resources import Flask,JWTManager,Api,
+from resources import Flask,JWTManager,Api
 from resources import AccountID,getPostAcc,getNewToken,cfg,GetEvents
 
 app=Flask(__name__)
