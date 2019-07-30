@@ -84,7 +84,7 @@ class getPostAcc(Resource):
 		P.poll(0)
 		P.produce(thisTopic,packb((obo,ebsonid,thisTopic),default=encode_dtm,use_bin_type=True),callback=delivery_report)
 		P.produce('topic-events',packb(eventDoc,default=encode_dtm,use_bin_type=True),callback=delivery_report)
-		return None
+		return jsonify(ebsonid)
 
 class AccountID(Resource):
 	@jwt_required
