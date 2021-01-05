@@ -1,3 +1,0 @@
-# CEP + ApacheKafka + Microservices<br>
-
-## documentation in process....

@@ -1,0 +1,4 @@
+FROM gql-p:alpha-slim
+
+ADD modules /app/
+RUN pip install -r modules

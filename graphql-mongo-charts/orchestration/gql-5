@@ -1,0 +1,4 @@
+FROM gql-p:1a
+
+ADD modules /app/
+RUN pip install -r modules

@@ -1,0 +1,46 @@
+version: "3.6"
+
+networks:
+    gql:
+        name: gqlnetwork
+
+volumes:
+    gql_dat:
+        name: vol_gql_dat
+        external: false
+
+services:
+    gql:
+        build:
+            context: .
+            dockerfile: gql-5
+        command: python waker.py
+        container_name: kon_gql
+        hostname: host_gql
+        image: gql-p:1b
+        ports:
+            - 36969:5000
+        volumes:
+            - o:\git:/git
+        depends_on:
+            - gqldb
+        networks:
+            - gql
+
+    gqldb:
+        image: postgres:12.1
+        container_name: kon_gqldb
+        hostname: host_gqldb
+        restart: always
+        ports:
+            - 55055:5432
+        volumes:
+            - gql_dat:/var/lib/postgresql/data
+        logging:
+            driver: none
+        networks:
+            - gql
+        environment:
+            POSTGRES_USER: pgusr
+            POSTGRES_DB: gdb
+            POSTGRES_PASSWORD: pgusr

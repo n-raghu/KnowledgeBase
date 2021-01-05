@@ -1,0 +1,10 @@
+pyyaml
+pyjwt
+psycopg2
+sqlalchemy
+graphene
+cryptography
+flask
+flask-restful
+flask-graphql
+graphene-sqlalchemy

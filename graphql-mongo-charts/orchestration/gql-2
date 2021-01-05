@@ -1,0 +1,3 @@
+FROM gql-p:alpha
+
+ADD waker.py /app/

@@ -1,0 +1,4 @@
+FROM gql-p:beta
+
+ADD modules /app/
+RUN pip install -r modules
