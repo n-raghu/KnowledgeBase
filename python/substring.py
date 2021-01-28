@@ -2,7 +2,7 @@ in_str = 'abaaaaaabbcbcbacbababababababababababababcccbbbaaa'
 'abaaabaaab cca bcbcbbcbccccb accaacaca ab'
 
 
-def get_next_pair(start_point, in_str=in_str):
+def get_next_pair(start_point: int, in_str: str=in_str) -> set:
     nuset = set()
     for element in in_str[start_point:]:
         if element in nuset:
