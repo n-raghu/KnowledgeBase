@@ -14,7 +14,7 @@ def sequence_sort(list1: list) -> list:
 
 if __name__ == '__main__':
     all_lists = [
-        [12, 75, 99, 1, 36],
+        [12, 5, 99, 1, 36],
         [12, 44, 66, 99, 33, 11, 55],
     ]
     for _list in all_lists:
