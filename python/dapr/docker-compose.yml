@@ -1,0 +1,20 @@
+version: "3.6"
+
+networks:
+    dap:
+        name: dapnet
+
+services:
+    dap:
+        build: .
+        working_dir: /app
+        command: python waker.py
+        container_name: dap
+        hostname: host_dap
+        image: dap
+        ports:
+            - 36936:5000
+        volumes:
+            - /home/raghu.neerukonda/dap:/app
+        networks:
+            - dap

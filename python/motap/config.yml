@@ -1,0 +1,12 @@
+resources:
+  addressmatcher: /v1/addressmatcher
+  about: /about
+
+consumer_requisites:
+  age:
+    min: 21
+    max: 55
+  income: 20000
+  bureauScore: 600
+  applicationScore: 600
+  maxDelL12M: 30

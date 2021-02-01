@@ -1,0 +1,20 @@
+version: "3.6"
+
+networks:
+    tap:
+        name: moneytapnet
+
+services:
+    tap:
+        build: .
+        working_dir: /app
+        command: python waker.py
+        container_name: tap
+        hostname: host_tap
+        image: tap
+        ports:
+            - 36936:5000
+        volumes:
+            - /home/raghu.neerukonda/motap:/app
+        networks:
+            - tap
