@@ -22,7 +22,7 @@ async def waiter(concurrent_tasks) -> None:
         print(f'Name: {task.get_name()}, Result: {task.result()}')
 
 
-async def cook(order: str, cook_time: int, sem) -> None:
+async def cook(order: str, cook_time: int, sem) -> str:
     async with sem:
         print(f'Started Cooking {order}')
         await aio.sleep(cook_time)
