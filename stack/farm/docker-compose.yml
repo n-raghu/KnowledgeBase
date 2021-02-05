@@ -1,0 +1,57 @@
+version: "3.6"
+
+networks:
+    stack:
+        name: stacknet
+        ipam:
+            driver: default
+            config:
+              - subnet: 172.99.16.0/28 # 16 hosts
+
+services:
+    api:
+        build:
+          context: ./img
+          dockerfile: docker-api
+        working_dir: /app
+        command: python main.py
+        container_name: api
+        hostname: host_api
+        image: api
+        ports:
+            - 36001:369
+        volumes:
+            - /home/raghu.neerukonda/stack/farm/backend:/app
+        networks:
+            stack:
+                ipv4_address: 172.99.16.6
+
+    app:
+        image: node
+        working_dir: /app
+        command: sleep 5d
+        container_name: app
+        hostname: host_app
+        ports:
+            - 36006:3000
+        volumes:
+            - /home/raghu.neerukonda/stack/farm/frontend:/app
+        networks:
+            - stack
+
+    mango:
+        image: mongo:4.4
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: mangodb
+            MONGO_INITDB_DATABASE: farmstack
+        networks:
+            stack:
+                ipv4_address: 172.99.16.5
+        volumes:
+            - /home/raghu.neerukonda/stack/db:/data/db
+        container_name: mango
+        hostname: host_mango
+        ports:
+            - 36005:27017

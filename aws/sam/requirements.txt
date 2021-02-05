@@ -1,0 +1,7 @@
+pyyaml==5.4.1
+bson==0.5.10
+boto3==1.16
+awscli==1.18.223
+fastapi==0.63.0
+uvicorn==0.13.3
+aws-sam-cli==1.16.0

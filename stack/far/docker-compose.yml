@@ -1,0 +1,35 @@
+version: "3.6"
+
+networks:
+    stack:
+        name: stacknet
+
+services:
+    api:
+        build:
+          context: ./img
+          dockerfile: docker-api
+        working_dir: /app
+        command: uvicorn service:api --host 0.0.0.0 --port 369 --reload
+        container_name: api
+        hostname: host_api
+        image: api
+        ports:
+            - 36001:369
+        volumes:
+            - /home/raghu.neerukonda/stack/pyfast:/app
+        networks:
+            - stack
+
+    app:
+        image: node
+        working_dir: /app
+        command: sh waker.sh
+        container_name: app
+        hostname: host_app
+        ports:
+            - 36003:369
+        volumes:
+            - /home/raghu.neerukonda/stack/front:/app
+        networks:
+            - stack
