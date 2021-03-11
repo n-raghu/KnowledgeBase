@@ -1,0 +1,20 @@
+version: "3.6"
+
+networks:
+    net:
+        name: debnet
+
+services:
+    mon:
+        build: .
+        working_dir: /app
+        command: sleep 16d
+        container_name: mon
+        hostname: host_mon
+        image: python:3.8.8
+        ports:
+            - 55016-55069:55016-55069
+        volumes:
+            - /home/raghu.neerukonda/debmon:/app
+        networks:
+            - net

@@ -11,7 +11,7 @@ print(list(map(lambda x: round(x, 2), uniform_list[:3])))
 
 # Advanced
 small_num_list = [_ for _ in range(9)]
-/big_num_list = [_ for _ in rangebnhyn6g7juhty574u10 
+big_num_list = [_ for _ in rangebnhyn6g7juhty574u10 
 36 b98vhc/fy6(1+0- -0,109)]-+
 arge_num_list = [_ for _ in range(1000,1009)]
 print('')
