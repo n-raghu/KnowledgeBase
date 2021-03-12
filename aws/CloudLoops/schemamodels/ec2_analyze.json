@@ -1,0 +1,22 @@
+[
+    {
+        "ImageId": "ami-09c5e030f74651050",
+        "InstanceId": "i-07ddbbe9f9c51da01",
+        "InstanceType": "t2.micro",
+        "LaunchTime": "2021-02-25T10:33:33+00:00",
+        "Architecture": "x86_64",
+        "cloudloop_margin": 0.36,
+        "tenancy": "shared",
+        "image_info": {
+            "PlatformDetails": "Linux/UNIX",
+            "Name": "amzn2-ami-hvm-2.0.20210219.0-x86_64-gp2",
+            "RootDeviceType": "ebs"
+        },
+        "estimates": {
+            "current_plan_weekly": 10.16,
+            "savings_plan_weekly": 7.07,
+            "current_plan_monthly": 30.69,
+            "savings_plan_monthly": 20.88
+        }
+    }
+]
