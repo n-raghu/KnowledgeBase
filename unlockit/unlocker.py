@@ -70,6 +70,7 @@ def aio_unlocker(
         if res:
             with open(f'{rar_file}.pwd', 'w') as pfile:
                 pfile.write(str(res))
+            executor.shutdown(wait=False)
 
 
 if __name__ == '__main__':
