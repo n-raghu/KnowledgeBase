@@ -4,8 +4,8 @@ def get_customer_creds(customer):
     if customer == 'richardspark':
         return {
             'request': True,
-            'key': 'AKIAYEL6T7E5GKDJRKPD',
-            'secret': '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'
+            'key': 'AKIAYEL6T7E5CZFV5DGB',
+            'secret': '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'
         }
     else:
         return {

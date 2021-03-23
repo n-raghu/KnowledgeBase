@@ -3,9 +3,9 @@ import sys
 import boto3
 from fastapi import APIRouter
 
-key = 'AKIAYEL6T7E5GKDJRKPD'
+key = 'AKIAYEL6T7E5CZFV5DGB'
 region = 'us-west-2'
-secret = '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'
+secret = 'MtAVjK2cIHIG+aPY1sC3Kw3Bp2BtbRXsswOPvkrn'
 
 
 filter_format = '[{{"Field": "tenancy", "Value": "shared", "Type": "TERM_MATCH"}},'\
