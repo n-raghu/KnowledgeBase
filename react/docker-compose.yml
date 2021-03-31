@@ -1,0 +1,27 @@
+version: "3.6"
+
+networks:
+    jet:
+        name: jsnet
+        ipam:
+            driver: default
+            config:
+              - subnet: 172.99.116.0/28 # 16 hosts
+
+services:
+
+    rnode:
+        image: rjs
+        build: .
+        working_dir: /app
+        command: sleep 16d
+        container_name: rnode
+        hostname: host_rnode
+        ports:
+            - 36003:3000
+            - 3001:3001
+            - 3636:3636
+        volumes:
+            - /home/raghu.neerukonda/rnode:/app
+        networks:
+            - jet

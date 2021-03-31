@@ -30,7 +30,9 @@ def unlocker(rarfile, pwd_chunk, tracker, start):
                     f.read()
                 print(p)
                 with open(f'{rarfile}.pwd', 'a') as gfile:
+                    gfile.write('\n')
                     gfile.write(p)
+                    gfile.write('\n')
                 return p
             except Exception:
                 continue
@@ -68,9 +70,9 @@ def aio_unlocker(
     for future in as_completed(ppool):
         res = future.result()
         if res:
+            executor.shutdown(wait=False)
             with open(f'{rar_file}.pwd', 'w') as pfile:
                 pfile.write(str(res))
-            executor.shutdown(wait=False)
 
 
 if __name__ == '__main__':
