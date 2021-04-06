@@ -1,6 +1,6 @@
 
 """
-Stack is a linear data structure and follow LIFO.
+Stack is a linear data structure and follows LIFO.
 Stack can be implemented in Python using Lists.
 """
 
@@ -20,7 +20,7 @@ class Stack:
 
 
 """
-Queue is a linear data structure and follow FIFO.
+Queue is a linear data structure and follows FIFO.
 Queue can be implemented in Python using Lists.
 """
 
