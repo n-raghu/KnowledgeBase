@@ -17,7 +17,7 @@ aws ecr create-repository --repository-name <water>
 
 ### ECR Login
 ```
-aws ecr get-login-password --region <us-east-1> | docker login --username AWS --password-stdin <842017991225>.dkr.ecr.<us-east-1>.amazonaws.com
+aws ecr get-login-password --region <us-east-1> | docker login --username AWS --password-stdin <amazon_acc>.dkr.ecr.<us-east-1>.amazonaws.com
 ```
 _Note: This is a temporary login and will remain active for around 12h_
 
