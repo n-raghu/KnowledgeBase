@@ -1,0 +1,12 @@
+bson
+pyyaml
+pygments
+Faker
+numpy
+pandas
+bokeh
+matplotlib
+plotly
+altair
+vega-datasets
+h2o_wave==0.13.0
