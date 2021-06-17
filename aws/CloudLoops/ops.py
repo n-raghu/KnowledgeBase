@@ -1,11 +1,10 @@
 import sys
 
 import boto3
-from fastapi import APIRouter
 
-key = 'AKIAYEL6T7E5CZFV5DGB'
+key = 'AKIAYEL6T7E5ATOJFU6K'
 region = 'us-west-2'
-secret = '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'
+secret = 'vhHd/bZAOgy3nK4/UCmlzQk4SR+FT8hxy03M6UJu'
 
 
 filter_format = '[{{"Field": "tenancy", "Value": "shared", "Type": "TERM_MATCH"}},'\
@@ -42,7 +41,7 @@ def get_img_info(client, images: list) -> dict:
     return {img['ImageId'] : {fld: img[fld] for fld in img_flds} for img in img_dat}
 
 
-def refresh_cnx(resource, ctype='client', region=region):
+def refresh_cnx(resource, ctype='client', region=region, key=key, secret=secret):
     if ctype == 'client':
         return boto3.client(
             resource,
@@ -69,3 +68,8 @@ def tree_traverse(tree, key):
             found = tree_traverse(v, key) 
             if found is not None:  # check if recursive call found it
                 return found
+
+
+def get_sec_groups():
+    client = refresh_cnx('ec2')
+    return client.describe_security_groups()
