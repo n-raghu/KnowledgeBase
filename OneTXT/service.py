@@ -1,7 +1,14 @@
 import sys
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from multiprocessing import Queue, Process
 
-from parsers.tgm_banknifty import stream
+from parsers.tgm_banknifty import stream as stream_nifty
+from parsers.goldflints import stream as stream_goldflints
+
+queue = Queue(369)
+
+Process(target=stream_goldflints, args=(queue,)).start()
+Process(target=stream_nifty, args=(queue,)).start()
 
 
-stream(1)
+while True:
+    print(queue.get(), flush=True)

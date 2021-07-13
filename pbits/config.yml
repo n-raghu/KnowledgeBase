@@ -1,0 +1,19 @@
+salesforce:
+  cid: 
+  data_ctype: application/json
+  dateformat: m/d/Y
+  pwd: Passion@88u6wwPqR6DGSjy787SGMmseV
+  secret: 
+  start_date: 2021-01-01
+  token: /services/oauth2/token
+  token_ctype: application/x-www-form-urlencoded
+  uid: 
+  domain_url: https://<company>.salesforce.com
+  query_point: /services/data/v45.0/query
+
+chunk:
+  size: 100
+
+layouts:
+  account: id,name,isdeleted,lastmodifieddate
+  opportunity: id, accountid, name, lastmodifieddate
