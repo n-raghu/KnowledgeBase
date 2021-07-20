@@ -7,22 +7,23 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from faker import Faker
 from bson.objectid import ObjectId
 
-Q = JoinableQueue(10_000)
+Q = JoinableQueue(1000)
 
 
-def gen_usr_set(fkt, Q, nuset=100):
+def gen_usr_set(Q, nuset=10):
+    fkr = Faker()
     users = []
     for _i in range(nuset):
         gender = choice(['F', 'M'])
         users.append({
             'uid': str(ObjectId()),
             'gender': gender,
-            'name': fkt.name_female() if gender == 'F' else fkt.name_male(),
-            'address': address_cleanser(fkt.address()),
-            'country': fkt.country(),
-            'email': fkt.email(),
-            'dob': fkt.date_of_birth(),
-            'db_stamp': fkt.date_time_this_decade()
+            'name': fkr.name_female() if gender == 'F' else fkr.name_male(),
+            'address': address_cleanser(fkr.address()),
+            'country': fkr.country(),
+            'email': fkr.email(),
+            'dob': fkr.date_of_birth(),
+            'db_stamp': fkr.date_time_this_decade()
         })
 
     Q.put(users)
@@ -32,13 +33,13 @@ def address_cleanser(addr):
     return addr.replace('\n', ' ').replace('\r', ' ')
 
 
-def launchpad(count, Q):
-    usr_sets = int(count/100)
+def launchpad(records, chunk_size Q):
+    usr_sets = int(records/chunk_size)
     f = Faker()
 
     with ThreadPoolExecutor(max_workers=3) as executor:
             futures = [
-                executor.submit(gen_usr_set, f, Q,) for _ in range(usr_sets)
+                executor.submit(gen_usr_set, Q, chunk_size,) for _ in range(usr_sets)
             ]
 
     for fut in as_completed(futures):
@@ -47,7 +48,8 @@ def launchpad(count, Q):
             print(r)
 
 
-def stream_writer(Q):
+def stream_writer(records, chunk_size, Q):
+    total_batches = int(records/chunk_size)
     empty_queue_num = 0
     consecutive_chk = 0
     created = False
@@ -57,6 +59,7 @@ def stream_writer(Q):
             empty_queue_num += 1
             consecutive_chk += 1
             while not Q.empty():
+                batches += 1
                 dat = Q.get()
                 csv_writer = DictWriter(
                     csvfile,
@@ -70,16 +73,20 @@ def stream_writer(Q):
                 Q.task_done()
                 consecutive_chk = 0
 
-            print(empty_queue_num, 'Q-Empty, Waiting for refill. Consecutive Checks:', consecutive_chk,flush=True)
-            time.sleep(3.69)
+            print(empty_queue_num, 'Q-Empty, Waiting for refill.', end='', flush=True)
+            print(' Consecutive Checks:', consecutive_chk, end='', flush=True)
+            print(' Successful Batches:', f'{batches}/{total_batches}', flush=True)
+            time.sleep(1.88)
 
 
 t = time.time()
-P1 = Process(target=launchpad, args=(500_000_000,Q))
+records = 500_000_000
+chunk_size = 1000
+P1 = Process(target=launchpad, args=(records,chunk_size,Q))
 
 P1.daemon = True
 P1.start()
-stream_writer(Q)
+stream_writer(records, chunk_size, Q)
 P1.join()
 print("Launchpad completed")
 
