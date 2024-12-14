@@ -1,5 +1,5 @@
 pyyaml==5.3.1
 bson==0.5.10
-fastapi==0.63
+fastapi==0.65.2
 dapr
 dapr-ext-fastapi
